@@ -4,7 +4,7 @@
 
   const $ = id => document.getElementById(id);
   const canvas = $('ll-canvas'), tip = $('ll-tip');
-  const LEVEL_COLOR = { ERROR: '#f87171', FATAL: '#f87171', WARN: '#fbbf24', INFO: '#4f8ef7', DEBUG: '#7e8ea3', TRACE: '#55637a' };
+  const LEVEL_COLOR = { ERROR: '#a8452f', FATAL: '#a8452f', WARN: '#8a6a1f', INFO: '#4e6478', DEBUG: '#5f5850', TRACE: '#8a8275' };
 
   /* ---------- 排查样例：一次跨服务超时的完整现场 ---------- */
   const SAMPLE = `2026-11-06 14:03:20.100 [gateway-http-3] INFO  gateway - POST /api/order uid=9527 received
@@ -142,7 +142,7 @@
     hitList = [];
 
     if (!list.length) {
-      ctx.fillStyle = '#55637a';
+      ctx.fillStyle = '#6f675d';
       ctx.font = '13px ' + getComputedStyle(document.body).getPropertyValue('--sans');
       ctx.fillText('没有可解析的日志 —— 粘贴含时间戳的日志行，或点「填入排查样例」', 20, 60);
       $('ll-legend').innerHTML = '';
@@ -156,26 +156,27 @@
     // 时间轴刻度（相对 t0 的毫秒）
     const steps = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 30000, 60000];
     const span = t1 - t0;
-    const step = steps.find(s => span / s <= 12) || 60000;
+    const maxTicks = w < 520 ? 4 : w < 760 ? 7 : 12;
+    const step = steps.find(s => span / s <= maxTicks) || 60000;
     ctx.font = '10.5px ' + getComputedStyle(document.body).getPropertyValue('--mono');
     for (let t = 0; t <= span + 1; t += step) {
       const x = X(t0 + t);
-      ctx.strokeStyle = 'rgba(255,255,255,0.055)';
+      ctx.strokeStyle = 'rgba(31,28,25,0.07)';
       ctx.beginPath(); ctx.moveTo(x, head - 6); ctx.lineTo(x, H - 8); ctx.stroke();
-      ctx.fillStyle = '#55637a';
+      ctx.fillStyle = '#6f675d';
       ctx.fillText(t === 0 ? 'T+0' : '+' + t + 'ms', x + 3, head - 10);
     }
     // 泳道底色与标签
     shown.forEach((lane, i) => {
       const y = head + i * laneH;
-      if (i % 2 === 0) { ctx.fillStyle = 'rgba(255,255,255,0.02)'; ctx.fillRect(L, y, w - L - R, laneH); }
-      ctx.fillStyle = '#9fb3c8';
+      if (i % 2 === 0) { ctx.fillStyle = 'rgba(31,28,25,0.025)'; ctx.fillRect(L, y, w - L - R, laneH); }
+      ctx.fillStyle = '#5f5850';
       ctx.font = '11.5px ' + getComputedStyle(document.body).getPropertyValue('--mono');
       const label = lane.length > 17 ? lane.slice(0, 16) + '…' : lane;
       ctx.fillText(label, 10, y + laneH / 2 + 4);
     });
     if (overflow > 0) {
-      ctx.fillStyle = '#55637a';
+      ctx.fillStyle = '#6f675d';
       ctx.fillText(`…还有 ${overflow} 条泳道未显示`, 10, H - 2);
     }
 
@@ -191,11 +192,11 @@
         if (showGaps && prev && e.ts - prev.ts > GAP_MS) {
           gapCount++;
           const x1 = X(prev.ts), x2 = x;
-          ctx.strokeStyle = 'rgba(251,191,36,0.4)';
+          ctx.strokeStyle = 'rgba(138,106,31,0.42)';
           ctx.setLineDash([3, 3]);
           ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
           ctx.setLineDash([]);
-          ctx.fillStyle = '#fbbf24';
+          ctx.fillStyle = '#8a6a1f';
           ctx.font = '10px ' + getComputedStyle(document.body).getPropertyValue('--mono');
           const label = '⏱ +' + (e.ts - prev.ts) + 'ms';
           ctx.fillText(label, (x1 + x2) / 2 - ctx.measureText(label).width / 2, y - 9);
@@ -203,19 +204,19 @@
         // 时长条
         if (e.dur !== null && e.dur > 0) {
           const w2 = Math.max(3, X(e.ts + e.dur) - x);
-          ctx.fillStyle = (LEVEL_COLOR[e.level] || '#4f8ef7') + '55';
+          ctx.fillStyle = (LEVEL_COLOR[e.level] || '#4e6478') + '55';
           roundRect(ctx, x, y - 5, w2, 10, 4);
           ctx.fill();
-          ctx.strokeStyle = (LEVEL_COLOR[e.level] || '#4f8ef7') + '99';
+          ctx.strokeStyle = (LEVEL_COLOR[e.level] || '#4e6478') + '99';
           ctx.stroke();
         }
         // 事件点
         ctx.beginPath();
         ctx.arc(x, y, e.level === 'ERROR' || e.level === 'FATAL' ? 5 : 3.6, 0, Math.PI * 2);
-        ctx.fillStyle = LEVEL_COLOR[e.level] || '#4f8ef7';
+        ctx.fillStyle = LEVEL_COLOR[e.level] || '#4e6478';
         ctx.fill();
         if (e.level === 'ERROR' || e.level === 'FATAL') {
-          ctx.strokeStyle = 'rgba(248,113,113,0.45)';
+          ctx.strokeStyle = 'rgba(168,69,47,0.45)';
           ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.stroke();
         }
         hitList.push({ x, y, e });

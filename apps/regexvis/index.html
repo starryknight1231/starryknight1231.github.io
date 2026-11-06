@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="RegexVis — 正则表达式可视化：逐段中文解释 + Thompson NFA 状态机 + 逐字符匹配动画">
 <title>RegexVis · 正则可视化</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Ctext x='16' y='22' font-size='14' text-anchor='middle' fill='%23a78bfa' font-family='monospace'%3E.*%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Ctext x='16' y='22' font-size='14' text-anchor='middle' fill='%23f2efe8' font-family='monospace'%3E.*%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
-    <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#121926"/><text x="16" y="21" font-size="13" text-anchor="middle" fill="#a78bfa" font-family="monospace">.*</text></svg>
+    <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#8d3620"/><text x="16" y="21" font-size="13" text-anchor="middle" fill="#f2efe8" font-family="monospace">.*</text></svg>
     <span>RegexVis <i>正则可视化</i></span>
   </div>
   <nav>
@@ -49,10 +49,11 @@
   <div class="card">
     <div class="card-title">Thompson NFA 状态机 <span style="font-weight:400">实线 = 吃字符 · 虚线 ε = 免费跳转 · 双圈 = 接受态</span></div>
     <div class="stage"><canvas id="rv-canvas"></canvas></div>
+    <div class="scroll-hint">← 左右滑动查看完整状态机 →</div>
     <div class="legend">
-      <span><i style="background:#4f8ef7"></i>当前激活状态</span>
-      <span><i style="background:none;border:1.5px solid #34d399"></i>接受态</span>
-      <span><i style="background:#a78bfa"></i>前瞻断言 (?=) / (?!)</span>
+      <span><i style="background:#4e6478"></i>当前激活状态</span>
+      <span><i style="background:none;border:1.5px solid #4f7038"></i>接受态</span>
+      <span><i style="background:#6f5a68"></i>前瞻断言 (?=) / (?!)</span>
     </div>
   </div>
 

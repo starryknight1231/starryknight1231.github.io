@@ -144,11 +144,12 @@
   /* ---------- 画布自适应 ---------- */
   function fit() {
     const dpr = window.devicePixelRatio || 1;
-    const w = canvas.parentElement.clientWidth || 900;
+    const w = Math.max(canvas.parentElement.clientWidth || 900, 760);
     const scale = w / 1000;
     const H = layout ? layout.H : 320;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(H * scale * dpr);
+    canvas.style.width = w + 'px';
     canvas.style.height = (H * scale) + 'px';
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr * scale, 0, 0, dpr * scale, 0, 0);

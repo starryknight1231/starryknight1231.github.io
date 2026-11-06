@@ -223,7 +223,7 @@ const box = { name: 'DevBox', local: true };
 console.log(\`Hello \${box.name}\`);
 \`\`\`
 
-> 引用：所有渲染都在本地完成，没有任何数据上传。
+> 引用：预览支持标题、列表、表格、代码块与行内代码。
 
 ---
 

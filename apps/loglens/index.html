@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="LogLens — 粘贴多行日志，自动解析时间戳/级别/线程，渲染时间线瀑布图，定位跨服务卡顿与重试">
 <title>LogLens · 日志时间线分析器</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M7 11h18M7 16h12M7 21h15' stroke='%232dd4bf' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Cpath d='M7 11h18M7 16h12M7 21h15' stroke='%23f2efe8' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
-    <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#121926"/><path d="M7 11h18M7 16h12M7 21h15" stroke="#2dd4bf" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#8d3620"/><path d="M7 11h18M7 16h12M7 21h15" stroke="#f2efe8" stroke-width="2.4" stroke-linecap="round"/></svg>
     <span>LogLens <i>日志时间线分析器</i></span>
   </div>
   <nav>
@@ -29,7 +29,7 @@
     <div class="row">
       <label class="chk"><input type="checkbox" id="ll-err-only"> 只看 WARN / ERROR</label>
       <label class="chk"><input type="checkbox" id="ll-gaps" checked> 标记大间隔（&gt; 400ms）</label>
-      <input type="text" id="ll-q" placeholder="关键词过滤（如 sku / timeout）" spellcheck="false">
+      <input type="text" id="ll-q" class="kw" placeholder="关键词过滤（如 sku / timeout）" spellcheck="false">
     </div>
   </div>
 

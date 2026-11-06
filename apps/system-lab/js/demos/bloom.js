@@ -46,7 +46,7 @@
           <div class="legend">
             <span><i style="background:var(--accent)"></i>已置 1 的 bit</span>
             <span><i style="background:var(--amber)"></i>本次查询命中的 bit</span>
-            <span><i style="background:#1a2330"></i>尚未置位</span>
+            <span><i style="background:#e3ddd1"></i>尚未置位</span>
           </div>
         </div>
         <div class="grid2">
@@ -152,17 +152,17 @@ HBase/LevelDB/RocksDB 的 memtable 判断、Chrome 恶意网址检测。
         for (let i = 0; i < m; i++) {
           const x = (i % cols) * cw, y = Math.floor(i / cols) * ch;
           if (!onSet.has(i)) {
-            ctx.fillStyle = '#1a2330';
+            ctx.fillStyle = '#e3ddd1';
             ctx.fillRect(x, y, Math.max(1, cw - 1), Math.max(1, ch - 1));
           }
         }
         onSet.forEach((type, i) => {
           const x = (i % cols) * cw, y = Math.floor(i / cols) * ch;
-          ctx.fillStyle = type === 2 ? '#7db8ff' : type === 1 ? '#4f8ef7'
-            : type === 3 ? '#fbbf24' : 'rgba(52,211,153,0.55)';
+          ctx.fillStyle = type === 2 ? '#4e6478' : type === 1 ? '#2f6b60'
+            : type === 3 ? '#8a6a1f' : 'rgba(79,112,56,0.55)';
           ctx.fillRect(x, y, Math.max(1, cw - 1), Math.max(1, ch - 1));
           if (type === 3 || type === 4) {
-            ctx.strokeStyle = type === 3 ? '#fff' : '#34d399';
+            ctx.strokeStyle = type === 3 ? '#faf8f3' : '#4f7038';
             ctx.lineWidth = 1;
             ctx.strokeRect(x - 0.5, y - 0.5, cw, ch);
           }

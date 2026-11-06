@@ -289,7 +289,7 @@
       }
       const hot = usedSet.has(ei) && highlight;
       const eps = e.m.k === 'eps';
-      ctx.strokeStyle = hot ? '#4f8ef7' : eps ? 'rgba(220,229,240,0.28)' : 'rgba(220,229,240,0.55)';
+      ctx.strokeStyle = hot ? '#4e6478' : eps ? 'rgba(31,28,25,0.22)' : 'rgba(31,28,25,0.45)';
       ctx.lineWidth = hot ? 2.6 : 1.3;
       ctx.setLineDash(eps ? [4, 4] : []);
       ctx.stroke();
@@ -301,14 +301,14 @@
       ctx.rotate(ang);
       ctx.beginPath();
       ctx.moveTo(0, 0); ctx.lineTo(-9, -4); ctx.lineTo(-9, 4); ctx.closePath();
-      ctx.fillStyle = hot ? '#4f8ef7' : 'rgba(220,229,240,0.55)';
+      ctx.fillStyle = hot ? '#4e6478' : 'rgba(31,28,25,0.45)';
       ctx.fill();
       ctx.restore();
       // 标签
       const lx = back ? mx : (a.px + b.px) / 2;
       const ly = back ? my + 2 : (a.py + b.py) / 2 + (ei % 2 ? 16 : -10);
       ctx.font = '11px ' + getComputedStyle(document.body).getPropertyValue('--mono');
-      ctx.fillStyle = hot ? '#7db8ff' : e.m.k === 'assert' ? '#a78bfa' : eps ? 'rgba(220,229,240,0.45)' : '#9fb3c8';
+      ctx.fillStyle = hot ? '#3c4f60' : e.m.k === 'assert' ? '#6f5a68' : eps ? 'rgba(31,28,25,0.38)' : '#5f5850';
       ctx.fillText(M_LABEL(e.m), lx - ctx.measureText(M_LABEL(e.m)).width / 2, ly);
     });
 
@@ -317,24 +317,24 @@
       const act = active.has(s.id);
       ctx.beginPath();
       ctx.arc(s.px, s.py, 12, 0, Math.PI * 2);
-      ctx.fillStyle = act ? '#4f8ef7' : '#121926';
+      ctx.fillStyle = act ? '#4e6478' : '#faf8f3';
       ctx.fill();
       ctx.lineWidth = act ? 2.4 : 1.4;
-      ctx.strokeStyle = act ? '#7db8ff' : 'rgba(220,229,240,0.5)';
+      ctx.strokeStyle = act ? '#3c4f60' : 'rgba(31,28,25,0.45)';
       ctx.stroke();
       if (s.id === nfa.accept) {
         ctx.beginPath();
         ctx.arc(s.px, s.py, 16.5, 0, Math.PI * 2);
-        ctx.strokeStyle = act ? '#7db8ff' : '#34d399';
+        ctx.strokeStyle = act ? '#3c4f60' : '#4f7038';
         ctx.stroke();
       }
-      ctx.fillStyle = act ? '#fff' : '#9fb3c8';
+      ctx.fillStyle = act ? '#faf8f3' : '#5f5850';
       ctx.font = '10.5px ' + getComputedStyle(document.body).getPropertyValue('--mono');
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(s.id, s.px, s.py + 0.5);
       ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
       if (s.id === nfa.start) {
-        ctx.fillStyle = '#34d399';
+        ctx.fillStyle = '#4f7038';
         ctx.font = '600 11px ' + getComputedStyle(document.body).getPropertyValue('--mono');
         ctx.fillText('start', s.px - 14, s.py - 18);
       }

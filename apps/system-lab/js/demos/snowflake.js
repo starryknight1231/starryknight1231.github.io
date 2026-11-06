@@ -119,7 +119,7 @@
         return (tsPart << 22n) | (wid << 12n) | seq;
       }
 
-      const TS_COLOR = '#7db8ff', WID_COLOR = '#2dd4bf', SEQ_COLOR = '#fbbf24';
+      const TS_COLOR = '#4e6478', WID_COLOR = '#2f6b60', SEQ_COLOR = '#8a6a1f';
 
       function rowFor(id) {
         const tsPart = (id >> 22n) & TS_MAX;

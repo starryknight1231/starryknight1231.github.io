@@ -3,329 +3,692 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="后端工程实验室 — 在线开发者工具与交互式系统设计演示，全部纯前端、本地计算、开源">
-<title>后端工程实验室 · 作品导航</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%232dd4bf' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="description" content="Starry Lab — 围绕系统设计的交互演示，覆盖数据结构、并发模型、正则引擎与日志分析。">
+<meta name="author" content="starryknight1231">
+<meta name="theme-color" content="#f2efe8">
+<title>Starry Lab · 系统设计交互演示集</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%23f2efe8' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
   :root {
-    --bg: #0b0f14; --panel: #121926; --panel-2: #0f1520; --border: #1f2b3a;
-    --border-strong: #2c3d52; --text: #dce5f0; --muted: #7e8ea3; --faint: #55637a;
-    --accent: #4f8ef7; --teal: #2dd4bf; --amber: #fbbf24;
-    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --bg: #f2efe8; --surface: #faf8f3; --surface-2: #f6f2ea; --band: #e9e4d8;
+    --line: #dcd5c7; --line-strong: #bdb3a1;
+    --ink: #1f1c19; --muted: #5f5850; --faint: #6f675d;
+    --accent: #a8442c; --accent-deep: #8d3620;
+    --moss: #4f7038; --brass: #8a6a1f; --clay: #a8452f;
+    --blue: #4e6478; --teal: #2f6b60; --mauve: #6f5a68;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --serif: ui-serif, "New York", "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", serif;
+    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg); color: var(--text); font-family: var(--sans);
-    line-height: 1.6; -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
-    background-size: 26px 26px;
-    min-height: 100vh;
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; }
+  ::selection { background: var(--accent); color: var(--surface); }
+  .container { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--accent);
   }
-  a { text-decoration: none; }
-  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px 40px; }
+  .eyebrow::before { content: ""; width: 16px; height: 1px; background: var(--accent); }
 
-  /* 顶部 */
-  header.site {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 22px 0; border-bottom: 1px solid var(--border);
+  /* 导航 */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(242,239,232,.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
   }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
-  .brand svg { display: block; }
-  .nav-links a { color: var(--muted); font-size: 13.5px; margin-left: 22px; }
+  .nav-inner { height: 64px; display: flex; align-items: center; gap: 34px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; }
+  .brand svg { width: 26px; height: 26px; display: block; }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 26px; font-size: 13px; color: var(--muted); }
   .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+    background: var(--ink); color: var(--bg); border-radius: 8px;
+    font-size: 12.5px; font-weight: 500; transition: background .15s;
+  }
+  .nav-cta:hover { background: var(--accent-deep); }
+  .nav-cta span { font-family: var(--mono); font-size: 11px; }
 
-  /* Hero */
-  .hero { padding: 72px 0 56px; }
-  .hero .tag {
-    display: inline-block; font-family: var(--mono); font-size: 12px; color: var(--teal);
-    border: 1px solid rgba(45,212,191,.4); background: rgba(45,212,191,.08);
-    border-radius: 20px; padding: 3px 12px; margin-bottom: 18px;
-  }
-  .hero h1 { font-size: 40px; line-height: 1.25; letter-spacing: 0.5px; }
-  .hero h1 .grad {
-    background: linear-gradient(90deg, #4f8ef7, #2dd4bf);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .hero p { color: var(--muted); font-size: 15.5px; margin-top: 16px; max-width: 640px; }
-  .hero p b { color: var(--text); }
-  .chips { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
-  .chip {
-    font-family: var(--mono); font-size: 12px; color: var(--muted);
-    background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px;
-  }
-  .chip b { color: var(--teal); }
-
-  /* 卡片 */
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 30px; } }
-  .app-card {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-    overflow: hidden; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-    display: flex; flex-direction: column;
-  }
-  .app-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: 0 12px 40px rgba(0,0,0,.35); }
-  .cover { display: block; height: 168px; background: var(--panel-2); border-bottom: 1px solid var(--border); overflow: hidden; }
-  .cover svg { width: 100%; height: 100%; display: block; }
-  .card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
-  .card-top { display: flex; align-items: center; gap: 10px; }
-  .card-top h2 { font-size: 17px; }
-  .badge {
-    font-size: 11px; padding: 1px 9px; border-radius: 20px; font-family: var(--mono); font-weight: 600;
-  }
-  .badge.live { background: rgba(52,211,153,.15); color: #34d399; }
-  .badge.plan { background: rgba(251,191,36,.15); color: var(--amber); }
-  .card-body p.desc { color: var(--muted); font-size: 13.5px; margin: 8px 0 14px; flex: 1; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-  .tags span {
-    font-family: var(--mono); font-size: 11px; color: var(--faint);
-    border: 1px solid var(--border); border-radius: 5px; padding: 2px 7px;
-  }
-  .acts { display: flex; gap: 10px; }
+  /* 首屏 */
+  .hero { padding: 74px 0 0; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 296px; gap: 56px; align-items: end; }
+  .hero h1 { margin: 18px 0 0; font-size: clamp(44px, 6.6vw, 78px); line-height: 1.08; letter-spacing: -.035em; font-weight: 700; }
+  .hero h1 span { color: var(--accent); }
+  .hero .lead { margin: 24px 0 0; max-width: 620px; font-size: 16.5px; color: var(--muted); }
+  .hero-actions { margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap; }
   .btn {
-    display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
-    border-radius: 8px; font-size: 13.5px; cursor: pointer; font-family: inherit;
-    border: 1px solid var(--border-strong); transition: all 0.12s; background: var(--panel-2); color: var(--text);
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    height: 44px; padding: 0 20px; border-radius: 9px; border: 1px solid transparent;
+    font-size: 14px; font-weight: 500; transition: background .15s, border-color .15s, color .15s;
   }
-  .btn.go { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
-  .btn.go:hover { filter: brightness(1.12); }
-  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.primary { background: var(--accent); color: #fbf7f0; }
+  .btn.primary:hover { background: var(--accent-deep); }
+  .btn.ghost { border-color: var(--line-strong); color: var(--ink); background: transparent; }
+  .btn.ghost:hover { border-color: var(--ink); }
+  .hero-facts { border-top: 1px solid var(--line-strong); padding-top: 12px; }
+  .fact { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: .05em; color: var(--faint); }
+  .fact b { font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
+  .hero-facts p { margin: 14px 0 0; font-size: 11.5px; line-height: 1.65; color: var(--faint); }
+
+  /* 首屏展示台 */
+  .hero-stage {
+    position: relative; margin-top: 54px; padding: 14px 22px 0;
+    background: var(--band); border: 1px solid var(--line-strong); border-radius: 22px; overflow: hidden;
+  }
+  .stage-top {
+    display: flex; justify-content: space-between; gap: 16px; padding: 4px 2px 11px;
+    border-bottom: 1px solid rgba(31,28,25,.10);
+    font-family: var(--mono); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; color: var(--faint);
+  }
+  .stage-canvas { position: relative; aspect-ratio: 1074 / 520; }
+  .frame { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 11px; overflow: hidden; box-shadow: 0 28px 60px rgba(31,28,25,.16); }
+  .hero-stage .frame { position: absolute; margin: 0; }
+  .frame .chrome { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 11px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .dots { display: flex; gap: 5px; }
+  .dots i { width: 6px; height: 6px; border-radius: 50%; background: #b98d82; }
+  .dots i:nth-child(2) { background: #c0a36b; }
+  .dots i:nth-child(3) { background: #8ba37c; }
+  .frame .addr {
+    flex: 1; margin-left: 6px; padding: 0 7px; background: var(--bg);
+    border: 1px solid var(--line); border-radius: 4px;
+    font-family: var(--mono); font-size: 8.5px; line-height: 16px; color: var(--faint);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .frame img { width: 100%; height: auto; }
+  .frame.main { width: 60%; left: 20%; top: 34px; z-index: 3; }
+  .frame.side { width: 38%; top: 112px; z-index: 2; }
+  .frame.left { left: -9%; }
+  .frame.right { right: -9%; }
+  .stage-chip {
+    position: absolute; left: 4%; bottom: 24px; z-index: 4;
+    display: inline-flex; align-items: center; gap: 7px; padding: 4px 9px;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 5px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: .04em; color: var(--muted);
+    box-shadow: 0 8px 20px rgba(31,28,25,.08);
+  }
+  .stage-chip::before { content: ""; width: 5px; height: 5px; background: var(--moss); }
+
+  /* 通用分区 */
+  .section { padding: 100px 0; }
+  .section-head { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 44px; align-items: end; }
+  .section-head h2 { margin: 14px 0 0; font-size: clamp(30px, 3.7vw, 44px); line-height: 1.16; letter-spacing: -.025em; font-weight: 700; }
+  .section-head > p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+  /* 模块 */
+  .tabs {
+    display: flex; gap: 4px; margin-top: 34px; padding: 5px; width: max-content; max-width: 100%;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 11px; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px;
+    border: 0; border-radius: 7px; background: transparent; color: var(--muted);
+    font-size: 12.5px; white-space: nowrap; cursor: pointer; transition: background .15s, color .15s;
+  }
+  .tab .no { font-family: var(--mono); font-size: 8.5px; opacity: .55; }
+  .tab:hover:not([aria-selected="true"]) { color: var(--ink); }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .showcase { display: grid; grid-template-columns: 1.08fr .92fr; gap: 52px; margin-top: 30px; align-items: center; }
+  .showcase .frame { box-shadow: 0 20px 50px rgba(31,28,25,.10); }
+  .showcase .frame img { aspect-ratio: 1280 / 900; object-fit: cover; object-position: top center; }
+  .info-no { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .info-no b { color: var(--accent); font-weight: 500; }
+  .info h3 { margin: 14px 0 0; font-size: 30px; line-height: 1.25; letter-spacing: -.02em; font-weight: 700; }
+  .info .desc { margin: 12px 0 0; color: var(--muted); font-size: 14px; }
+  .info-foot { margin-top: 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .info-stat { font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; color: var(--faint); }
+  .info-open { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 13.5px; border-bottom: 1px solid transparent; }
+  .info-open:hover { border-color: var(--accent); }
+  .showcase.is-in .frame, .showcase.is-in .info { animation: rise .36s ease both; }
+  @keyframes rise { from { opacity: .35; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .coming {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .04em; color: var(--faint);
+  }
+  .coming .badge { padding: 1px 8px; border: 1px dashed var(--line-strong); border-radius: 99px; color: var(--brass); }
+
+  /* 问题卡 */
+  .questions { padding: 92px 0; background: var(--band); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+  .q-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+  .q-card {
+    display: flex; flex-direction: column; min-height: 236px; padding: 22px 22px 18px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    transition: transform .18s, box-shadow .18s, border-color .18s;
+  }
+  .q-card:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: 0 18px 40px rgba(31,28,25,.08); }
+  .q-top { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .q-dot { width: 7px; height: 7px; background: var(--qa); flex: none; }
+  .q-text { margin: 20px 0 0; font-family: var(--serif); font-size: 22px; line-height: 1.5; letter-spacing: -.01em; font-weight: 600; }
+  .q-foot { margin-top: auto; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); }
+  .q-foot .arrow { color: var(--accent); font-size: 14px; }
+
+  /* 工程约束 */
+  .p-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+  .p-card { display: flex; flex-direction: column; min-height: 390px; padding: 30px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; }
+  .p-card h3 { margin: 12px 0 0; font-size: 24px; line-height: 1.3; letter-spacing: -.02em; font-weight: 700; }
+  .p-card > p { margin: 10px 0 0; max-width: 420px; color: var(--muted); font-size: 13.5px; }
+  .p-visual { margin-top: auto; padding-top: 28px; }
+  .code {
+    margin: 0; padding: 16px 18px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    font-family: var(--mono); font-size: 11px; line-height: 1.85; color: var(--muted); white-space: pre; overflow-x: auto;
+  }
+  .code b { color: var(--accent); font-weight: 500; }
+  .code i { color: var(--faint); font-style: normal; }
+  .ui-mock { padding: 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .ui-head { display: flex; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--faint); }
+  .ui-state { color: var(--moss); }
+  .ui-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; }
+  .ui-row b { color: var(--ink); font-weight: 500; }
+  .ui-track { position: relative; height: 2px; margin-top: 9px; background: var(--line); }
+  .ui-track i { position: absolute; inset: 0 auto 0 0; background: var(--accent); }
+  .ui-track em { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); transform: translate(-50%,-50%); }
+  .ui-toggles { display: flex; gap: 18px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .ui-toggle { display: inline-flex; align-items: center; gap: 6px; }
+  .ui-toggle i { position: relative; width: 20px; height: 11px; border-radius: 99px; background: var(--line-strong); }
+  .ui-toggle i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 7px; height: 7px; border-radius: 50%; background: var(--surface); }
+  .ui-toggle.on i { background: var(--moss); }
+  .ui-toggle.on i::after { left: 11px; }
+
+  /* 设计立场 */
+  .manifesto { padding: 92px 0 78px; background: var(--ink); color: var(--bg); }
+  .mf-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(242,239,232,.18); }
+  .manifesto .eyebrow { color: #d99a80; }
+  .manifesto .eyebrow::before { background: #d99a80; }
+  .mf-index { font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(242,239,232,.48); white-space: nowrap; }
+  .mf-line { margin: 52px 0 0; max-width: 980px; font-size: clamp(30px, 4.6vw, 60px); line-height: 1.22; letter-spacing: -.035em; font-weight: 600; }
+  .mf-line em { font-style: normal; color: #d99a80; }
+  .mf-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 76px; padding-top: 18px; border-top: 1px solid rgba(242,239,232,.18); }
+  .mf-foot p { margin: 0; max-width: 480px; font-size: 12.5px; line-height: 1.75; color: rgba(242,239,232,.6); }
+  .mf-meta { font-family: var(--mono); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: rgba(242,239,232,.45); white-space: nowrap; }
+  @media (max-width: 720px) {
+    .manifesto { padding: 64px 0 58px; }
+    .mf-line { margin-top: 34px; }
+    .mf-foot { display: block; margin-top: 44px; }
+    .mf-meta { display: block; margin-top: 18px; }
+  }
+
+  /* FAQ */
+  .faq-grid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 56px; align-items: start; }
+  .faq-intro p { margin: 12px 0 0; color: var(--muted); font-size: 13.5px; max-width: 280px; }
+  .faq-list { border-top: 1px solid var(--line-strong); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 18px 0; font-size: 14.5px; font-weight: 500; cursor: pointer; list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; font-family: var(--mono); font-size: 16px; font-weight: 400; color: var(--faint); }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .faq-item p { margin: 0 0 20px; max-width: 640px; color: var(--muted); font-size: 13px; line-height: 1.8; }
 
   /* 页脚 */
-  footer.site {
-    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border);
-    color: var(--faint); font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  .site-footer { padding: 64px 0 22px; background: var(--band); border-top: 1px solid var(--line-strong); }
+  .foot-top { display: grid; grid-template-columns: 1.5fr repeat(3, .8fr); gap: 40px; }
+  .foot-brand .brand { margin-bottom: 18px; }
+  .foot-brand p { margin: 0; max-width: 320px; font-family: var(--serif); font-size: 26px; line-height: 1.4; letter-spacing: -.015em; }
+  .foot-col h4 { margin: 4px 0 14px; font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+  .foot-col a { display: block; margin-bottom: 9px; font-size: 12.5px; color: var(--muted); }
+  .foot-col a:hover { color: var(--accent); }
+  .foot-bottom {
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .04em; color: var(--faint);
   }
-  footer.site a { color: var(--muted); }
-  footer.site a:hover { color: var(--accent); }
-  .foot-mono { font-family: var(--mono); }
+
+  @media (max-width: 1020px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 34px; }
+    .hero-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 18px; }
+    .hero-facts p { grid-column: 1 / -1; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; }
+    .section-head > p { max-width: 640px; }
+    .showcase { grid-template-columns: 1fr; gap: 30px; }
+    .info { max-width: 720px; }
+  }
+  @media (max-width: 860px) {
+    .q-grid { grid-template-columns: 1fr; }
+    .q-card { min-height: 0; }
+    .p-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; gap: 26px; }
+    .faq-intro p { max-width: 520px; }
+    .foot-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 820px) {
+    .nav-inner { justify-content: space-between; }
+    .nav-links { display: none; }
+    .nav-cta { margin-left: auto; }
+    .section { padding: 76px 0; }
+    .questions { padding: 72px 0; }
+    .hero { padding-top: 52px; }
+    .stage-canvas { aspect-ratio: 4 / 3; }
+    .frame.main { width: 86%; left: 7%; top: 24px; }
+    .frame.side { display: none; }
+    .stage-chip { display: none; }
+  }
+  @media (max-width: 560px) {
+    .container { width: calc(100% - 32px); }
+    .hero h1 { font-size: 42px; }
+    .hero .lead { font-size: 15px; }
+    .hero-facts { grid-template-columns: 1fr 1fr; }
+    .hero-facts p { display: none; }
+    .hero-stage { padding: 12px 14px 0; border-radius: 18px; }
+    .stage-top span:last-child { display: none; }
+    .frame.main { width: 92%; left: 4%; top: 12px; }
+    .section-head h2 { font-size: 30px; }
+    .info h3 { font-size: 25px; }
+    .showcase .frame img { aspect-ratio: 1280 / 900; object-fit: cover; object-position: top; }
+    .p-card { padding: 24px 20px; min-height: 340px; }
+    .foot-top { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+    .foot-brand { grid-column: 1 / -1; }
+    .foot-brand p { font-size: 23px; }
+    .foot-bottom { margin-top: 36px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="site">
-    <div class="brand">
-      <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#121926"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#2dd4bf" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Backend&nbsp;Lab
-    </div>
-    <nav class="nav-links">
-      <a href="#apps">应用</a>
-      <a id="gh-nav" href="#" target="_blank" rel="noopener">GitHub</a>
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Starry Lab 首页">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#8d3620"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#f2efe8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Starry Lab
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#modules">模块</a>
+      <a href="#questions">问题</a>
+      <a href="#constraints">工程约束</a>
+      <a href="#faq">常见问题</a>
     </nav>
-  </header>
+    <a class="nav-cta" href="#modules">开始浏览 <span>→</span></a>
+  </div>
+</header>
 
+<main id="top">
   <section class="hero">
-    <span class="tag">$ whoami → 后端工程师 / 架构方向</span>
-    <h1>把系统设计，<br>变成<span class="grad">可以动手玩的演示</span></h1>
-    <p>
-      这里是我维护的一组<b>在线工具与交互式演示</b>：每一个都是<b>纯前端实现、数据本地计算、源码开放</b>。
-      与其写「XX 原理详解」，我更愿意把它做成能点开就玩的东西——一致性哈希怎么迁移、令牌桶怎么扛突发，拖一下就知道。
-    </p>
-    <div class="chips">
-      <span class="chip">在线应用 <b>5</b></span>
-      <span class="chip">规划中 <b>1</b></span>
-      <span class="chip">零依赖 · 无后端 · 数据不出浏览器</span>
-      <span class="chip">持续生长中</span>
-    </div>
-  </section>
-
-  <section id="apps" class="grid">
-    <!-- DevBox -->
-    <div class="app-card">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <rect x="60" y="34" width="280" height="118" rx="10" fill="#121926" stroke="#1f2b3a"/>
-          <rect x="60" y="34" width="280" height="24" rx="10" fill="#0f1520"/>
-          <circle cx="76" cy="46" r="4" fill="#f87171"/><circle cx="90" cy="46" r="4" fill="#fbbf24"/><circle cx="104" cy="46" r="4" fill="#34d399"/>
-          <text x="200" y="50" text-anchor="middle" fill="#7e8ea3" font-family="monospace" font-size="10">devbox — 80×24</text>
-          <text x="80" y="82" fill="#4f8ef7" font-family="monospace" font-size="16">$ devbox</text>
-          <text x="80" y="106" fill="#dce5f0" font-family="monospace" font-size="13">16 tools ready ✓</text>
-          <text x="80" y="130" fill="#2dd4bf" font-family="monospace" font-size="13">JSON · Base64 · Regex · Hash</text>
-          <rect x="330" y="94" width="3" height="14" fill="#4f8ef7"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></rect>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>DevBox · 开发者工具箱</h2><span class="badge live">● 在线</span></div>
-        <p class="desc">16 个高频开发工具：JSON 格式化（错误定位到行列）、Base64、正则测试（高亮+捕获组）、SHA 哈希、时间戳、颜色转换…全部本地计算。</p>
-        <div class="tags"><span>JSON</span><span>Regex</span><span>WebCrypto</span><span>Hash Routing</span></div>
-        <div class="acts">
-          <a class="btn go" href="apps/devbox/">打开应用 →</a>
-          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Starry Lab · Interactive Demos</span>
+          <h1>系统设计<br><span>交互式演示集</span></h1>
+          <p class="lead">围绕系统设计的交互演示，覆盖数据结构、并发与共识、事务隔离、网络传输、正则与日志分析。</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#modules">浏览模块 →</a>
+            <a class="btn ghost" href="apps/devbox/">打开 DevBox</a>
+          </div>
         </div>
+        <aside class="hero-facts" aria-label="站点概况">
+          <div class="fact"><span>模块</span><b>逐个可操作</b></div>
+          <div class="fact"><span>第三方依赖</span><b>无</b></div>
+          <div class="fact"><span>适配</span><b>桌面与窄屏</b></div>
+          <div class="fact"><span>源码</span><b>可读</b></div>
+        </aside>
       </div>
-    </div>
 
-    <!-- System Lab -->
-    <div class="app-card">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <circle cx="200" cy="84" r="52" fill="none" stroke="#1f2b3a" stroke-width="1.5"/>
-          <circle cx="200" cy="84" r="34" fill="none" stroke="#1f2b3a" stroke-width="1" stroke-dasharray="3 4"/>
-          <circle cx="200" cy="84" r="16" fill="none" stroke="#1f2b3a" stroke-width="1"/>
-          <g>
-            <circle cx="252" cy="84" r="7" fill="#4f8ef7"><animate attributeName="r" values="6;7.5;6" dur="3s" repeatCount="indefinite"/></circle>
-            <circle cx="173.5" cy="49" r="7" fill="#2dd4bf"/>
-            <circle cx="153" cy="112" r="7" fill="#fbbf24"/>
-            <circle cx="251" cy="120" r="4" fill="#a78bfa"/>
-          </g>
-          <g fill="#dce5f0" font-family="monospace" font-size="9" opacity="0.85">
-            <circle cx="200" cy="68" r="2" fill="#4f8ef7"/><circle cx="214" cy="76" r="2" fill="#2dd4bf"/><circle cx="188" cy="95" r="2" fill="#fbbf24"/><circle cx="206" cy="102" r="2" fill="#a78bfa"/>
-          </g>
-          <text x="200" y="158" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">consistent-hashing / rate-limit / snowflake / bloom</text>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>System Lab · 系统设计实验室</h2><span class="badge live">● 在线</span></div>
-        <p class="desc">四个交互演示把面试高频题变成可玩的动画：一致性哈希（迁移率实测）、四种限流算法同屏对比、雪花 ID 位级拆解与时钟回拨、布隆过滤器误判率实验。</p>
-        <div class="tags"><span>一致性哈希</span><span>令牌桶/漏桶</span><span>雪花ID</span><span>布隆过滤器</span></div>
-        <div class="acts">
-          <a class="btn go" href="apps/system-lab/">打开应用 →</a>
-          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+      <div class="hero-stage" aria-label="应用界面预览">
+        <div class="stage-top">
+          <span>Starry Lab / Live Modules</span>
+          <span>System Lab · DevBox · LogLens</span>
         </div>
-      </div>
-    </div>
-
-    <!-- RegexVis -->
-    <div class="app-card">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <text x="200" y="42" text-anchor="middle" fill="#a78bfa" font-family="monospace" font-size="17">\d{4}-(0?[1-9]|1[0-2])</text>
-          <g stroke="#2c3d52" stroke-width="1.4" fill="none">
-            <path d="M60 96 Q80 78 100 96 T140 96"/>
-            <line x1="140" y1="96" x2="176" y2="96"/>
-            <line x1="176" y1="96" x2="212" y2="96"/>
-            <line x1="212" y1="96" x2="248" y2="96"/>
-            <line x1="248" y1="96" x2="284" y2="96"/>
-            <line x1="284" y1="96" x2="320" y2="96"/>
-            <path d="M176 96 Q176 70 148 82" stroke-dasharray="4 3"/>
-            <path d="M284 96 Q300 120 284 130 Q268 138 252 126" stroke-dasharray="4 3"/>
-          </g>
-          <g fill="#121926" stroke="#a78bfa" stroke-width="1.6">
-            <circle cx="60" cy="96" r="9"/><circle cx="140" cy="96" r="9"/><circle cx="212" cy="96" r="9"/><circle cx="284" cy="96" r="9"/><circle cx="320" cy="96" r="9"/>
-          </g>
-          <circle cx="320" cy="96" r="13" fill="none" stroke="#34d399" stroke-width="1.4"/>
-          <text x="200" y="140" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">Thompson NFA · 逐字符匹配动画</text>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>RegexVis · 正则可视化</h2><span class="badge live">● 在线</span></div>
-        <p class="desc">正则 → 逐段中文解释 + Thompson NFA 状态机图 + 逐字符匹配动画：亲眼看着 ε-闭包在状态间跳，看贪婪分支先走哪条边。</p>
-        <div class="tags"><span>NFA</span><span>Thompson 构造</span><span>前瞻断言</span><span>Canvas</span></div>
-        <div class="acts">
-          <a class="btn go" href="apps/regexvis/">打开应用 →</a>
-          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- JMM Lab -->
-    <div class="app-card">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <rect x="60" y="52" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
-          <text x="115" y="69" text-anchor="middle" fill="#dce5f0" font-family="monospace" font-size="10">a = 1</text>
-          <rect x="230" y="52" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
-          <text x="285" y="69" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-size="10">v = true (vol)</text>
-          <rect x="230" y="106" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
-          <text x="285" y="123" text-anchor="middle" fill="#dce5f0" font-family="monospace" font-size="10">读 v</text>
-          <rect x="60" y="106" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
-          <text x="115" y="123" text-anchor="middle" fill="#34d399" font-family="monospace" font-size="10">读 a = 1 ✓</text>
-          <path d="M170 65 Q200 65 228 65" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
-          <path d="M285 80 Q285 92 285 104" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
-          <path d="M285 134 Q200 134 172 119" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
-          <text x="200" y="152" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">happens-before · volatile · DCL · 线程状态机</text>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>JMM Lab · Java 并发实验室</h2><span class="badge live">● 在线</span></div>
-        <p class="desc">把《并发编程实战》第 16 章画成可点的动画：8 条 happens-before 规则图解、volatile 可见性动画、20 万次交错重排实验、线程状态机、DCL 单例步进推演。</p>
-        <div class="tags"><span>happens-before</span><span>volatile</span><span>重排序</span><span>DCL</span></div>
-        <div class="acts">
-          <a class="btn go" href="apps/jmm-lab/">打开应用 →</a>
-          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- LogLens -->
-    <div class="app-card">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <text x="16" y="66" fill="#9fb3c8" font-family="monospace" font-size="9">gateway-http-3</text>
-          <circle cx="180" cy="62" r="4" fill="#4f8ef7"/><circle cx="330" cy="62" r="4.5" fill="#f87171"/>
-          <text x="16" y="98" fill="#9fb3c8" font-family="monospace" font-size="9">order-wrk-1</text>
-          <circle cx="210" cy="94" r="4" fill="#4f8ef7"/><circle cx="260" cy="94" r="4.5" fill="#f87171"/>
-          <text x="16" y="130" fill="#9fb3c8" font-family="monospace" font-size="9">inv-wrk-2</text>
-          <circle cx="240" cy="126" r="4" fill="#4f8ef7"/>
-          <rect x="270" y="121" width="48" height="10" rx="4" fill="rgba(251,191,36,0.4)" stroke="rgba(251,191,36,0.8)"/>
-          <text x="336" y="130" fill="#fbbf24" font-family="monospace" font-size="9">⏱ 1.4s</text>
-          <line x1="120" y1="142" x2="370" y2="142" stroke="#1f2b3a"/>
-          <text x="120" y="156" fill="#3a4a60" font-family="monospace" font-size="8">T+0</text>
-          <text x="340" y="156" fill="#3a4a60" font-family="monospace" font-size="8">+3.8s</text>
-          <text x="200" y="28" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">多服务日志 → 时间线瀑布 · gap 标记 · ERROR 聚类</text>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>LogLens · 日志时间线分析器</h2><span class="badge live">● 在线</span></div>
-        <p class="desc">粘贴多行分布式日志：自动识别三种时间戳格式、按线程/服务分泳道渲染瀑布图、标记可疑 gap、按时长画横条、ERROR 按模板聚类。</p>
-        <div class="tags"><span>故障排查</span><span>时间线</span><span>gap 分析</span><span>ERROR 聚类</span></div>
-        <div class="acts">
-          <a class="btn go" href="apps/loglens/">打开应用 →</a>
-          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 规划中 -->
-    <div class="app-card" style="opacity:.75;border-style:dashed">
-      <span class="cover">
-        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
-          <rect width="400" height="168" fill="#0d1420"/>
-          <text x="200" y="80" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="12">curl -X POST -H 'Content-Type:…'</text>
-          <path d="M160 100 h34 M186 96l8 4-8 4" stroke="#2c3d52" stroke-width="2" fill="none"/>
-          <text x="284" y="104" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="11">HttpClient h = …</text>
-          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">curl ↔ Java/Go/Python · 施工中</text>
-        </svg>
-      </span>
-      <div class="card-body">
-        <div class="card-top"><h2>curl2code</h2><span class="badge plan">◐ 规划中</span></div>
-        <p class="desc">curl 命令 ↔ Java OkHttp / Python / Go 代码互转，后端日常刚需。做完之前，这里只有一句诚实的「施工中」。</p>
-        <div class="tags"><span>curl</span><span>OkHttp</span><span>代码生成</span></div>
-        <div class="acts">
-          <button class="btn" disabled>待上线</button>
+        <div class="stage-canvas">
+          <figure class="frame side left">
+            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / devbox</span></div>
+            <img src="assets/shots/devbox.png" alt="DevBox 正则测试界面" fetchpriority="high">
+          </figure>
+          <figure class="frame main">
+            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / system-lab</span></div>
+            <img src="assets/shots/systemlab.png" alt="System Lab 一致性哈希界面" fetchpriority="high">
+          </figure>
+          <figure class="frame side right">
+            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / loglens</span></div>
+            <img src="assets/shots/loglens.png" alt="LogLens 时间线界面" fetchpriority="high">
+          </figure>
+          <span class="stage-chip">100 vnodes / 迁移率 25%</span>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="site">
-    <span>© 2026 Backend Lab · 用 ZCode 构建，代码开源 · <a id="gh-foot" href="#" target="_blank" rel="noopener" class="foot-mono">github</a></span>
-    <span class="foot-mono">纯前端 · 本地计算 · MIT</span>
-  </footer>
-</div>
+  <section class="section" id="modules">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Modules / Interactive</span>
+          <h2>每一个模块，从结构到日志</h2>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="模块切换">
+        <button class="tab" role="tab" id="tab-0" aria-controls="module-panel" aria-selected="true"><span class="no">01</span>DevBox</button>
+        <button class="tab" role="tab" id="tab-1" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">02</span>System Lab</button>
+        <button class="tab" role="tab" id="tab-2" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">03</span>RegexVis</button>
+        <button class="tab" role="tab" id="tab-3" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">04</span>JMM Lab</button>
+        <button class="tab" role="tab" id="tab-4" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">05</span>LogLens</button>
+        <button class="tab" role="tab" id="tab-5" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">06</span>Raft Lab</button>
+        <button class="tab" role="tab" id="tab-6" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">07</span>MVCC Lab</button>
+        <button class="tab" role="tab" id="tab-7" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">08</span>Wire Lab</button>
+      </div>
+
+      <div class="showcase is-in" id="module-panel" role="tabpanel" aria-labelledby="tab-0">
+        <div class="frame showcase-frame">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr" id="module-addr">lab / devbox</span></div>
+          <img id="module-shot" src="assets/shots/devbox.png" alt="DevBox 界面">
+        </div>
+        <div class="info">
+          <div class="info-no"><span><b id="module-no">01</b> / <span id="module-cat">Toolkit</span></span><span id="module-stat">16 TOOLS</span></div>
+          <h3 id="module-title">DevBox · 开发者工具箱</h3>
+          <p class="desc" id="module-desc">十六个常用开发工具，覆盖 JSON 格式化与错误行列定位、Base64 编解码、正则匹配与捕获组、SHA 哈希、时间戳与颜色转换。</p>
+          <div class="info-foot">
+            <span class="info-stat" id="module-stat-2">No. 01</span>
+            <a class="info-open" id="module-open" href="apps/devbox/">打开应用 <span>→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="coming">
+        <span>Next / curl2code — curl ↔ Java · Go · Python</span>
+        <span class="badge">规划中</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="questions" id="questions">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Questions</span>
+          <h2>从一个具体问题开始</h2>
+        </div>
+      </div>
+      <div class="q-grid">
+        <a class="q-card" href="apps/system-lab/" style="--qa:#4e6478">
+          <div class="q-top"><span class="q-dot"></span>System Lab · 一致性哈希</div>
+          <p class="q-text">扩容一台机器，到底会挪走多少 key？</p>
+          <div class="q-foot"><span>用哈希环回答</span><span class="arrow">→</span></div>
+        </a>
+        <a class="q-card" href="apps/jmm-lab/" style="--qa:#8a6a1f">
+          <div class="q-top"><span class="q-dot"></span>JMM Lab · happens-before</div>
+          <p class="q-text">加了 volatile，为什么还是可能读到旧值？</p>
+          <div class="q-foot"><span>看可见性动画</span><span class="arrow">→</span></div>
+        </a>
+        <a class="q-card" href="apps/loglens/" style="--qa:#2f6b60">
+          <div class="q-top"><span class="q-dot"></span>LogLens · 时间线</div>
+          <p class="q-text">日志里那 800ms 的空档，是谁在等谁？</p>
+          <div class="q-foot"><span>打开时间线</span><span class="arrow">→</span></div>
+        </a>
+        <a class="q-card" href="apps/raft-lab/" style="--qa:#4f7038">
+          <div class="q-top"><span class="q-dot"></span>Raft Lab · 网络分区</div>
+          <p class="q-text">断网之后，为什么两侧都选不出领导者？</p>
+          <div class="q-foot"><span>把集群切开看</span><span class="arrow">→</span></div>
+        </a>
+        <a class="q-card" href="apps/mvcc-lab/" style="--qa:#8d4a5e">
+          <div class="q-top"><span class="q-dot"></span>MVCC Lab · 快照隔离</div>
+          <p class="q-text">快照隔离下，两个人为什么能同时下班？</p>
+          <div class="q-foot"><span>回放冲突现场</span><span class="arrow">→</span></div>
+        </a>
+        <a class="q-card" href="apps/wire-lab/" style="--qa:#2f5470">
+          <div class="q-top"><span class="q-dot"></span>Wire Lab · HTTP/2</div>
+          <p class="q-text">HTTP/2 都多路复用了，怎么还在等？</p>
+          <div class="q-foot"><span>对齐加载时序</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="constraints">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Constraints</span>
+          <h2>工程上的几个选择</h2>
+        </div>
+      </div>
+      <div class="p-grid">
+        <article class="p-card">
+          <span class="eyebrow">01 / Zero dependencies</span>
+          <h3>零依赖，打开即用</h3>
+          <p>没有构建步骤，也没有第三方库。</p>
+          <div class="p-visual">
+<pre class="code"><span>lab/</span>
+├─ <b>devbox/</b>       <i>16 tools</i>
+├─ <b>system-lab/</b>    <i>4 demos</i>
+├─ <b>regexvis/</b>      <i>nfa</i>
+├─ <b>jmm-lab/</b>       <i>8 rules</i>
+├─ <b>loglens/</b>       <i>timeline</i>
+├─ <b>raft-lab/</b>      <i>5 nodes</i>
+├─ <b>mvcc-lab/</b>      <i>5 levels</i>
+└─ <b>wire-lab/</b>      <i>4 models</i></pre>
+          </div>
+        </article>
+        <article class="p-card">
+          <span class="eyebrow">02 / Observable</span>
+          <h3>参数可调，状态可见</h3>
+          <div class="p-visual">
+            <div class="ui-mock" aria-hidden="true">
+              <div class="ui-head"><span>控制台</span><span class="ui-state">运行中</span></div>
+              <div class="ui-row"><span>虚拟节点 / 物理节点</span><b>100</b></div>
+              <div class="ui-track"><i style="width:64%"></i><em style="left:64%"></em></div>
+              <div class="ui-row"><span>并发线程</span><b>08</b></div>
+              <div class="ui-track"><i style="width:42%"></i><em style="left:42%"></em></div>
+              <div class="ui-toggles">
+                <span class="ui-toggle on"><i></i>逐步观察</span>
+                <span class="ui-toggle"><i></i>显示 ε 转移</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto" aria-label="设计立场">
+    <div class="container">
+      <div class="mf-top">
+        <span class="eyebrow">Statement / 设计立场</span>
+        <span class="mf-index">Starry Lab · 2026</span>
+      </div>
+      <p class="mf-line">把系统从黑盒里拿出来，<br>放到<em>可以拨动</em>的界面上。</p>
+      <div class="mf-foot">
+        <p>这里没有截图式答案；每一步都可以重跑。</p>
+        <span class="mf-meta">Open page · Adjust · Observe</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container faq-grid">
+      <div class="faq-intro">
+        <span class="eyebrow">FAQ</span>
+        <h2 style="margin:14px 0 0;font-size:clamp(30px,3.7vw,44px);line-height:1.16;letter-spacing:-.025em;">常见问题</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>需要安装或登录吗？</summary>
+          <p>不需要，不请求账号。</p>
+        </details>
+        <details class="faq-item">
+          <summary>手机上能用吗？</summary>
+          <p>可以，较宽的画布支持横向滑动。</p>
+        </details>
+        <details class="faq-item">
+          <summary>为什么坚持零依赖？</summary>
+          <p>源码更透明，也不会被依赖版本卡住。</p>
+        </details>
+        <details class="faq-item">
+          <summary>演示里的数字是真实计算的吗？</summary>
+          <p>是，页面实时计算，不预先写死。</p>
+        </details>
+        <details class="faq-item">
+          <summary>可以引用或二次修改吗？</summary>
+          <p>可以，MIT License。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#8d3620"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#f2efe8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Starry Lab
+        </a>
+        <p>用运行结果说话。</p>
+      </div>
+      <div class="foot-col">
+        <h4>模块</h4>
+        <a href="apps/devbox/">DevBox</a>
+        <a href="apps/system-lab/">System Lab</a>
+        <a href="apps/regexvis/">RegexVis</a>
+        <a href="apps/jmm-lab/">JMM Lab</a>
+        <a href="apps/loglens/">LogLens</a>
+        <a href="apps/raft-lab/">Raft Lab</a>
+        <a href="apps/mvcc-lab/">MVCC Lab</a>
+        <a href="apps/wire-lab/">Wire Lab</a>
+      </div>
+      <div class="foot-col">
+        <h4>索引</h4>
+        <a href="#modules">全部模块</a>
+        <a href="#questions">问题入口</a>
+        <a href="#constraints">工程约束</a>
+        <a href="#faq">常见问题</a>
+      </div>
+      <div class="foot-col">
+        <h4>资源</h4>
+        <a href="https://github.com/starryknight1231" target="_blank" rel="noopener">GitHub</a>
+        <a href="README.md">项目说明</a>
+        <a href="https://github.com/starryknight1231" target="_blank" rel="noopener">MIT License</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 starryknight1231 · Starry Lab</span>
+      <span>HTML · CSS · JavaScript · 0 dependencies</span>
+    </div>
+  </div>
+</footer>
 
 <script>
-  // 部署到 username.github.io 后自动把源码链接指向本仓库；本地预览时隐藏
-  (function () {
-    const m = location.hostname.match(/^([\w-]+)\.github\.io$/);
-    const links = document.querySelectorAll('#gh-nav, #gh-foot, .gh-src');
-    if (m) {
-      const url = 'https://github.com/' + m[1] + '/' + m[1] + '.github.io';
-      links.forEach(a => { a.href = url; });
-    } else {
-      document.querySelectorAll('.gh-src').forEach(a => a.style.display = 'none');
-      const n = document.getElementById('gh-nav');
-      if (n) n.style.display = 'none';
-      const f = document.getElementById('gh-foot');
-      if (f) f.style.display = 'none';
+  const MODULES = [
+    {
+      no: '01', cat: 'Toolkit', name: 'DevBox · 开发者工具箱',
+      addr: 'lab / devbox', img: 'assets/shots/devbox.png', href: 'apps/devbox/',
+      desc: '十六个常用开发工具，覆盖 JSON 格式化与错误行列定位、Base64 编解码、正则匹配与捕获组、SHA 哈希、时间戳与颜色转换。',
+      stat: '16 TOOLS'
+    },
+    {
+      no: '02', cat: 'Systems', name: 'System Lab · 系统设计实验室',
+      addr: 'lab / system-lab', img: 'assets/shots/systemlab.png', href: 'apps/system-lab/',
+      desc: '四个系统设计演示：一致性哈希迁移率实测、四种限流算法同屏对比、雪花 ID 位级拆解与时钟回拨模拟、布隆过滤器误判率实验。',
+      stat: '04 DEMOS'
+    },
+    {
+      no: '03', cat: 'Regex', name: 'RegexVis · 正则可视化',
+      addr: 'lab / regexvis', img: 'assets/shots/regexvis.png', href: 'apps/regexvis/',
+      desc: '把正则表达式拆成逐段说明，绘制 Thompson NFA 状态机图，并以逐字符动画演示 ε-闭包与贪婪、懒惰分支的走向。',
+      stat: 'NFA / CANVAS'
+    },
+    {
+      no: '04', cat: 'Concurrency', name: 'JMM Lab · Java 并发实验室',
+      addr: 'lab / jmm-lab', img: 'assets/shots/jmm.png', href: 'apps/jmm-lab/',
+      desc: 'Java 内存模型的交互演示：八条 happens-before 规则图解、volatile 可见性动画、二十万次交错重排实验、线程状态机与 DCL 单例推演。',
+      stat: '08 RULES'
+    },
+    {
+      no: '05', cat: 'Logs', name: 'LogLens · 日志时间线分析器',
+      addr: 'lab / loglens', img: 'assets/shots/loglens.png', href: 'apps/loglens/',
+      desc: '面向分布式日志的时间线分析：识别三种时间戳格式，按线程与服务分泳道渲染瀑布图，标记可疑 gap，并按模板聚类 ERROR 日志。',
+      stat: '03 FORMATS'
+    },
+    {
+      no: '06', cat: 'Consensus', name: 'Raft Lab · 共识协议实验室',
+      addr: 'lab / raft-lab', img: 'assets/shots/raft.png', href: 'apps/raft-lab/',
+      desc: '事件驱动的 Raft 模型：随机选举超时与固定超时的活锁对照、日志复制到提交的多数派计数、可以关掉的两条安全规则、分区之后哪一侧还能写。',
+      stat: '04 DEMOS'
+    },
+    {
+      no: '07', cat: 'Transactions', name: 'MVCC Lab · 事务隔离实验室',
+      addr: 'lab / mvcc-lab', img: 'assets/shots/mvcc.png', href: 'apps/mvcc-lab/',
+      desc: '隔离级别的真实语义：PG 快照可见性逐步判定、脏读 / 不可重复读 / 幻读 / 丢失更新由引擎按执行历史判出、写偏斜的三种堵法、优先图环检测。',
+      stat: '05 LEVELS'
+    },
+    {
+      no: '08', cat: 'Network', name: 'Wire Lab · 网络传输实验室',
+      addr: 'lab / wire-lab', img: 'assets/shots/wire.png', href: 'apps/wire-lab/',
+      desc: '传输层与应用层的时序仿真：TCP 握手与挥手的序号 / ACK 实时推导、逐 RTT 的 cwnd 曲线、五种投递模型的页面加载对比、TLS 各版本的握手轮次与首字节时间。',
+      stat: '04 MODELS'
     }
-  })();
+  ];
+
+  const tabs = [...document.querySelectorAll('.tab')];
+  const panel = document.getElementById('module-panel');
+  const shot = document.getElementById('module-shot');
+  const addr = document.getElementById('module-addr');
+  const noEl = document.getElementById('module-no');
+  const catEl = document.getElementById('module-cat');
+  const titleEl = document.getElementById('module-title');
+  const descEl = document.getElementById('module-desc');
+  const statEl = document.getElementById('module-stat');
+  const stat2El = document.getElementById('module-stat-2');
+  const openEl = document.getElementById('module-open');
+
+  MODULES.forEach(m => { const img = new Image(); img.src = m.img; });
+
+  function render(i, focusTab) {
+    const m = MODULES[i];
+    tabs.forEach((t, j) => {
+      t.setAttribute('aria-selected', String(i === j));
+      t.tabIndex = i === j ? 0 : -1;
+    });
+    if (focusTab) tabs[i].focus();
+    panel.setAttribute('aria-labelledby', 'tab-' + i);
+    shot.src = m.img;
+    shot.alt = m.name + ' 界面';
+    addr.textContent = m.addr;
+    noEl.textContent = m.no;
+    catEl.textContent = m.cat;
+    titleEl.textContent = m.name;
+    descEl.textContent = m.desc;
+    statEl.textContent = m.stat;
+    stat2El.textContent = 'No. ' + m.no;
+    openEl.href = m.href;
+    panel.classList.remove('is-in');
+    void panel.offsetWidth;
+    panel.classList.add('is-in');
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => render(i));
+    tab.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const next = (i + (e.key === 'ArrowRight' ? 1 : MODULES.length - 1)) % MODULES.length;
+      render(next, true);
+    });
+  });
+  render(0);
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('toggle', () => {
+      if (!item.open) return;
+      document.querySelectorAll('.faq-item[open]').forEach(other => {
+        if (other !== item) other.open = false;
+      });
+    });
+  });
 </script>
 </body>
 </html>

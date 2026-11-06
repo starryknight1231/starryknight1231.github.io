@@ -93,10 +93,10 @@
       }
       let st = mkAlgo();
       const ALGOS = [
-        { id: 0, name: '固定窗口', color: '#60a5fa' },
-        { id: 1, name: '滑动窗口', color: '#2dd4bf' },
-        { id: 2, name: '令牌桶', color: '#a78bfa' },
-        { id: 3, name: '漏桶', color: '#fbbf24' },
+        { id: 0, name: '固定窗口', color: '#4e6478' },
+        { id: 1, name: '滑动窗口', color: '#2f6b60' },
+        { id: 2, name: '令牌桶', color: '#6f5a68' },
+        { id: 3, name: '漏桶', color: '#8a6a1f' },
       ];
 
       function rateAt(tt) {
@@ -172,12 +172,12 @@
         ALGOS.forEach(al => {
           const y0 = al.id * laneH + 8;
           // 泳道底
-          ctx.fillStyle = 'rgba(255,255,255,0.025)';
+          ctx.fillStyle = 'rgba(31,28,25,0.035)';
           ctx.fillRect(padL, y0, plotW, laneH - 8);
           // 秒刻度
           const tStart = t - WINDOW;
-          ctx.strokeStyle = 'rgba(255,255,255,0.07)';
-          ctx.fillStyle = '#55637a';
+          ctx.strokeStyle = 'rgba(31,28,25,0.10)';
+          ctx.fillStyle = '#6f675d';
           for (let s = Math.ceil(tStart / 1000) * 1000; s <= t; s += 1000) {
             const x = padL + (s - tStart) / WINDOW * plotW;
             ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y0 + laneH - 8); ctx.stroke();
@@ -189,7 +189,7 @@
             if (r.t < tStart) return;
             const x = padL + (r.t - tStart) / WINDOW * plotW;
             const y = y0 + (laneH - 8) / 2;
-            ctx.fillStyle = r.ok ? '#34d399' : '#f87171';
+            ctx.fillStyle = r.ok ? '#4f7038' : '#a8452f';
             ctx.globalAlpha = r.ok ? 0.9 : 1;
             ctx.fillRect(x - 1.5, y - 5, 3, 10);
             ctx.globalAlpha = 1;
@@ -202,13 +202,13 @@
           if (al.id === 2) { frac = st.token.tokens / C; label = Math.floor(st.token.tokens) + '/' + C; }
           if (al.id === 3) { frac = st.leaky.q / C; label = Math.floor(st.leaky.q) + '/' + C; }
           frac = Math.max(0, Math.min(1, frac));
-          ctx.fillStyle = '#0a0e13';
+          ctx.fillStyle = '#e3ddd1';
           ctx.fillRect(mx, my, mw, 10);
           ctx.fillStyle = col;
           ctx.fillRect(mx, my, mw * frac, 10);
-          ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+          ctx.strokeStyle = 'rgba(31,28,25,0.18)';
           ctx.strokeRect(mx + 0.5, my + 0.5, mw - 1, 9);
-          ctx.fillStyle = '#7e8ea3';
+          ctx.fillStyle = '#5f5850';
           ctx.fillText(label, mx + mw / 2 - ctx.measureText(label).width / 2, my + 24);
           // 左侧标签
           ctx.fillStyle = al.color;

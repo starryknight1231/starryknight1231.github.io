@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="System Lab — 把分布式系统设计变成可以动手玩的交互演示：一致性哈希、限流算法、雪花 ID、布隆过滤器">
+<meta name="description" content="System Lab — 一致性哈希、限流算法、雪花 ID 与布隆过滤器的交互演示">
 <title>System Lab · 系统设计实验室</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%232dd4bf' stroke-width='2.2'/%3E%3Ccircle cx='25' cy='16' r='2.6' fill='%234f8ef7'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23f2efe8' stroke-width='2.2'/%3E%3Ccircle cx='25' cy='16' r='2.6' fill='%23f2efe8'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <span class="brand-logo">
-        <svg viewBox="0 0 32 32" width="26" height="26"><rect width="32" height="32" rx="7" fill="#121926"/><circle cx="16" cy="16" r="9" fill="none" stroke="#2dd4bf" stroke-width="2.2"/><circle cx="25" cy="16" r="2.6" fill="#4f8ef7"/></svg>
+        <svg viewBox="0 0 32 32" width="26" height="26"><rect width="32" height="32" rx="7" fill="#8d3620"/><circle cx="16" cy="16" r="9" fill="none" stroke="#f2efe8" stroke-width="2.2"/><circle cx="25" cy="16" r="2.6" fill="#f2efe8"/></svg>
       </span>
       <div>
         <div class="brand-name">System Lab</div>
@@ -23,7 +23,7 @@
     <nav id="nav" class="nav"></nav>
     <div class="sidebar-foot">
       <a class="back-link" href="../../">← 返回导航页</a>
-      4 个交互演示 · 纯前端模拟<br>源码 <a href="https://github.com" id="gh-link" target="_blank" rel="noopener">GitHub</a>
+      4 个交互演示 · 可单步推演<br>源码 <a href="https://github.com" id="gh-link" target="_blank" rel="noopener">GitHub</a>
     </div>
   </aside>
   <main class="main">
@@ -35,7 +35,7 @@
       </div>
     </header>
     <div id="tool-body" class="tool-body"></div>
-    <footer class="main-foot">System Lab · 交互式系统设计演示 · 每个演示都对应一道真实的面试高频题</footer>
+    <footer class="main-foot">System Lab · 交互式系统设计演示</footer>
   </main>
 </div>
 <div id="toast" class="toast" role="status"></div>

@@ -62,8 +62,8 @@
         const a = NODES[e.f], b = NODES[e.t];
         const x1 = a.x + (b.x - a.x) * 0.18, y1 = a.y + (b.y - a.y) * 0.22;
         const x2 = b.x - (b.x - a.x) * 0.18, y2 = b.y - (b.y - a.y) * 0.22;
-        svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(220,229,240,0.35)" stroke-width="1.4"/>`;
-        svg += `<polygon points="${x2},${y2} ${x2 - 5},${y2 - 8} ${x2 + 5},${y2 - 8}" fill="rgba(220,229,240,0.55)" transform="rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI} ${x2} ${y2})"/>`;
+        svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(31,28,25,0.32)" stroke-width="1.4"/>`;
+        svg += `<polygon points="${x2},${y2} ${x2 - 5},${y2 - 8} ${x2 + 5},${y2 - 8}" fill="rgba(31,28,25,0.45)" transform="rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI} ${x2} ${y2})"/>`;
         svg += `<text class="edge-label" x="${(x1 + x2) / 2 + e.dx}" y="${(y1 + y2) / 2 + e.dy}" text-anchor="middle">${e.label}</text>`;
       });
       // 节点

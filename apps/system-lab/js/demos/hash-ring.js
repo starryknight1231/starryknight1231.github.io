@@ -146,13 +146,13 @@ N 变化时，只有「新节点与它的环上前驱之间」那段弧上的 ke
         layout = SL.fitCanvas(canvas, H);
         const { ctx, w, h } = layout;
         const cx = w / 2, cy = h / 2;
-        const R_NODE = Math.min(w, h) / 2 - 34;
+        const R_NODE = Math.min(w, h) / 2 - 46;
         const R_KEY = R_NODE - 42;
 
         ctx.clearRect(0, 0, w, h);
 
         // 参考环
-        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.strokeStyle = 'rgba(31,28,25,0.12)';
         ctx.lineWidth = 1;
         [R_NODE, R_KEY].forEach(r => { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); });
 
@@ -174,36 +174,36 @@ N 变化时，只有「新节点与它的环上前驱之间」那段弧上的 ke
         keys.forEach((k, i) => {
           const a = k.hash / 4294967296 * Math.PI * 2 - Math.PI / 2;
           const x = cx + R_KEY * Math.cos(a), y = cy + R_KEY * Math.sin(a);
-          ctx.fillStyle = ch[i] >= 0 ? nodes[ch[i]].color : '#55637a';
+          ctx.fillStyle = ch[i] >= 0 ? nodes[ch[i]].color : '#6f675d';
           ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
           if (movedSet.has(i)) {
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = '#1f1c19';
             ctx.lineWidth = 1.4;
             ctx.beginPath(); ctx.arc(x, y, 5.5, 0, Math.PI * 2); ctx.stroke();
           }
         });
 
         // 物理节点
-        const ring0 = buildRing();
         nodes.forEach((n, ni) => {
-          // 用第一个 vnode 的位置代表物理节点
-          const own = ring0.find(p => p.ni === ni);
-          if (!own) return;
-          const a = own.pos / 4294967296 * Math.PI * 2 - Math.PI / 2;
+          // 物理节点均匀排布：vnode 哈希可能巧合挤在同一小段弧上
+          const a = (ni + 0.5) / nodes.length * Math.PI * 2 - Math.PI / 2;
           const x = cx + (R_NODE + 16) * Math.cos(a), y = cy + (R_NODE + 16) * Math.sin(a);
           ctx.fillStyle = n.color;
           ctx.beginPath(); ctx.arc(x, y, 7.5, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+          ctx.strokeStyle = '#faf8f3';
           ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.arc(x, y, 7.5, 0, Math.PI * 2); ctx.stroke();
           ctx.fillStyle = n.color;
           ctx.font = '600 12px ' + getComputedStyle(document.body).getPropertyValue('--mono');
-          const lxRaw = cx + (R_NODE + 30) * Math.cos(a), lyRaw = cy + (R_NODE + 30) * Math.sin(a);
-          // 钳制标签位置，避免贴边被裁剪
-          const lx = Math.max(38, Math.min(w - 38, lxRaw));
-          const ly = Math.max(12, Math.min(h - 8, lyRaw));
-          ctx.textAlign = Math.cos(a) > 0.2 ? 'left' : Math.cos(a) < -0.2 ? 'right' : 'center';
-          ctx.textBaseline = Math.sin(a) > 0.2 ? 'top' : Math.sin(a) < -0.2 ? 'bottom' : 'middle';
+          const s = Math.sin(a), c = Math.cos(a);
+          const lxRaw = cx + (R_NODE + 32) * c, lyRaw = cy + (R_NODE + 32) * s;
+          const lx = Math.max(40, Math.min(w - 40, lxRaw));
+          let ly = Math.max(14, Math.min(h - 14, lyRaw));
+          let baseline = 'middle';
+          if (s > 0.6) { ly = Math.min(h - 4, y + 14); baseline = 'top'; }
+          else if (s < -0.6) { ly = Math.max(4, y - 14); baseline = 'bottom'; }
+          ctx.textAlign = s > 0.6 || s < -0.6 ? 'center' : c > 0 ? 'left' : 'right';
+          ctx.textBaseline = baseline;
           ctx.fillText('节点 ' + n.name, lx, ly);
         });
       }
@@ -221,7 +221,7 @@ N 变化时，只有「新节点与它的环上前驱之间」那段弧上的 ke
             <span class="meter-val">${counts[i]}</span>
           </div>`).join('') || '<span class="hint">暂无节点</span>';
         body.querySelector('#hr-legend').innerHTML =
-          `<span><i style="background:#fff"></i>白圈 = 本次变更换了主人的 key</span>` +
+          `<span><i style="background:none;border:1.5px solid var(--text)"></i>深色描边 = 本次变更换了主人的 key</span>` +
           nodes.map(n => `<span><i style="background:${n.color}"></i>节点 ${SL.esc(n.name)}</span>`).join('');
       }
 
@@ -260,13 +260,10 @@ N 变化时，只有「新节点与它的环上前驱之间」那段弧上的 ke
         const mx = e.clientX - rect.left, my = e.clientY - rect.top;
         const { w, h } = layout;
         const cx = w / 2, cy = h / 2;
-        const R_NODE = Math.min(w, h) / 2 - 34;
-        const ring0 = buildRing();
+        const R_NODE = Math.min(w, h) / 2 - 46;
         let hit = -1, hd = 16;
         nodes.forEach((n, ni) => {
-          const own = ring0.find(p => p.ni === ni);
-          if (!own) return;
-          const a = own.pos / 4294967296 * Math.PI * 2 - Math.PI / 2;
+          const a = (ni + 0.5) / nodes.length * Math.PI * 2 - Math.PI / 2;
           const x = cx + (R_NODE + 16) * Math.cos(a), y = cy + (R_NODE + 16) * Math.sin(a);
           const d = Math.hypot(mx - x, my - y);
           if (d < hd) { hd = d; hit = ni; }
