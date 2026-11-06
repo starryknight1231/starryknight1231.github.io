@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RegexVis — 正则表达式可视化：逐段中文解释 + Thompson NFA 状态机 + 逐字符匹配动画">
+<title>RegexVis · 正则可视化</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Ctext x='16' y='22' font-size='14' text-anchor='middle' fill='%23a78bfa' font-family='monospace'%3E.*%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#121926"/><text x="16" y="21" font-size="13" text-anchor="middle" fill="#a78bfa" font-family="monospace">.*</text></svg>
+    <span>RegexVis <i>正则可视化</i></span>
+  </div>
+  <nav>
+    <a href="../../">← 返回导航页</a>
+    <a id="gh-link" href="#" target="_blank" rel="noopener">源码</a>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="card">
+    <div class="card-title">正则表达式
+      <select id="rv-example" style="width:auto">
+        <option value="">— 选择示例 —</option>
+        <option value="email">邮箱</option>
+        <option value="phone">手机号</option>
+        <option value="ipv4">IPv4</option>
+        <option value="date">日期</option>
+        <option value="url">URL 路径</option>
+        <option value="pwd">密码强度（前瞻）</option>
+        <option value="hex">十六进制颜色</option>
+      </select>
+    </div>
+    <input type="text" id="rv-regex" placeholder="输入正则，如 ^\d{4}-\d{2}$ 或 (ab|cd)+" spellcheck="false" autocomplete="off">
+    <div class="btn-row">
+      <label class="chk"><input type="checkbox" id="rv-ci"> 忽略大小写 (i)</label>
+      <span class="hint" id="rv-status" style="margin:0"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">逐段解释</div>
+    <div id="rv-segs" class="seg-list"><span class="hint">输入正则后，这里逐段给出中文解释</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Thompson NFA 状态机 <span style="font-weight:400">实线 = 吃字符 · 虚线 ε = 免费跳转 · 双圈 = 接受态</span></div>
+    <div class="stage"><canvas id="rv-canvas"></canvas></div>
+    <div class="legend">
+      <span><i style="background:#4f8ef7"></i>当前激活状态</span>
+      <span><i style="background:none;border:1.5px solid #34d399"></i>接受态</span>
+      <span><i style="background:#a78bfa"></i>前瞻断言 (?=) / (?!)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">匹配模拟 · 看正则逐字符「吃掉」输入</div>
+    <div class="row">
+      <input type="text" id="rv-input" placeholder="输入测试字符串" spellcheck="false" autocomplete="off">
+      <div class="fix btn-row" style="margin:0">
+        <button class="btn teal" id="rv-play">▶ 播放</button>
+        <button class="btn" id="rv-step">单步</button>
+        <button class="btn" id="rv-reset">重置</button>
+      </div>
+    </div>
+    <div class="cells" id="rv-cells"></div>
+    <div class="verdict" id="rv-verdict">输入后自动开始模拟</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">面试要点</div>
+    <pre class="out" style="white-space:pre-wrap">NFA vs DFA：NFA 同一字符可能有多条出路（需要记录状态集合 / 回溯），DFA 每步只有唯一去向。
+Thompson 构造法：任何正则都能在 O(n) 时间构造成等价 NFA，状态数 O(n) —— 本页画的图就是它。
+JS / Java / Python 的正则引擎是「带回溯的 NFA」：功能强（支持前瞻、反向引用）但最坏指数时间；
+  这就是灾难性回溯 (a+)+b 对 "aaaaaaaaaaaaaaaaX" 卡死的根源。RE2 / Rust regex 用 DFA 保证线性。
+贪婪与懒惰：* 默认贪婪（尽量多吃），加 ? 变懒惰（尽量少吃）—— 在模拟器里把光标停在分支处就能看到它先走哪条边。
+前瞻 (?=) 是零宽断言：不消耗字符，只「看一眼」—— 模拟时注意它的边不会前进输入指针。</pre>
+  </div>
+</main>
+<div id="toast" class="toast" role="status"></div>
+
+<script src="js/parser.js"></script>
+<script src="js/nfa.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

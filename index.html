@@ -123,8 +123,8 @@
       与其写「XX 原理详解」，我更愿意把它做成能点开就玩的东西——一致性哈希怎么迁移、令牌桶怎么扛突发，拖一下就知道。
     </p>
     <div class="chips">
-      <span class="chip">在线应用 <b>2</b></span>
-      <span class="chip">规划中 <b>2</b></span>
+      <span class="chip">在线应用 <b>5</b></span>
+      <span class="chip">规划中 <b>1</b></span>
       <span class="chip">零依赖 · 无后端 · 数据不出浏览器</span>
       <span class="chip">持续生长中</span>
     </div>
@@ -188,48 +188,115 @@
       </div>
     </div>
 
-    <!-- 规划中 1 -->
-    <div class="app-card" style="opacity:.75;border-style:dashed">
+    <!-- RegexVis -->
+    <div class="app-card">
       <span class="cover">
         <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
           <rect width="400" height="168" fill="#0d1420"/>
-          <text x="200" y="90" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="30">(^ab|cd*)?$</text>
-          <circle cx="140" cy="110" r="14" fill="none" stroke="#2c3d52" stroke-width="1.5"/>
-          <path d="M154 110h30" stroke="#2c3d52" stroke-width="1.5"/>
-          <circle cx="198" cy="110" r="14" fill="none" stroke="#2c3d52" stroke-width="1.5"/>
-          <path d="M212 110h30" stroke="#2c3d52" stroke-width="1.5" stroke-dasharray="4 3"/>
-          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">NFA 状态机图 · 施工中</text>
+          <text x="200" y="42" text-anchor="middle" fill="#a78bfa" font-family="monospace" font-size="17">\d{4}-(0?[1-9]|1[0-2])</text>
+          <g stroke="#2c3d52" stroke-width="1.4" fill="none">
+            <path d="M60 96 Q80 78 100 96 T140 96"/>
+            <line x1="140" y1="96" x2="176" y2="96"/>
+            <line x1="176" y1="96" x2="212" y2="96"/>
+            <line x1="212" y1="96" x2="248" y2="96"/>
+            <line x1="248" y1="96" x2="284" y2="96"/>
+            <line x1="284" y1="96" x2="320" y2="96"/>
+            <path d="M176 96 Q176 70 148 82" stroke-dasharray="4 3"/>
+            <path d="M284 96 Q300 120 284 130 Q268 138 252 126" stroke-dasharray="4 3"/>
+          </g>
+          <g fill="#121926" stroke="#a78bfa" stroke-width="1.6">
+            <circle cx="60" cy="96" r="9"/><circle cx="140" cy="96" r="9"/><circle cx="212" cy="96" r="9"/><circle cx="284" cy="96" r="9"/><circle cx="320" cy="96" r="9"/>
+          </g>
+          <circle cx="320" cy="96" r="13" fill="none" stroke="#34d399" stroke-width="1.4"/>
+          <text x="200" y="140" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">Thompson NFA · 逐字符匹配动画</text>
         </svg>
       </span>
       <div class="card-body">
-        <div class="card-top"><h2>正则可视化</h2><span class="badge plan">◐ 规划中</span></div>
-        <p class="desc">正则表达式 → NFA 状态机图 + 逐段含义解释。做出来之前，我不放假的占位链接——这里只有一句诚实的「施工中」。</p>
-        <div class="tags"><span>Regex</span><span>NFA</span><span>Canvas</span></div>
+        <div class="card-top"><h2>RegexVis · 正则可视化</h2><span class="badge live">● 在线</span></div>
+        <p class="desc">正则 → 逐段中文解释 + Thompson NFA 状态机图 + 逐字符匹配动画：亲眼看着 ε-闭包在状态间跳，看贪婪分支先走哪条边。</p>
+        <div class="tags"><span>NFA</span><span>Thompson 构造</span><span>前瞻断言</span><span>Canvas</span></div>
         <div class="acts">
-          <button class="btn" disabled>待上线</button>
+          <a class="btn go" href="apps/regexvis/">打开应用 →</a>
+          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
         </div>
       </div>
     </div>
 
-    <!-- 规划中 2 -->
+    <!-- JMM Lab -->
+    <div class="app-card">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <rect x="60" y="52" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
+          <text x="115" y="69" text-anchor="middle" fill="#dce5f0" font-family="monospace" font-size="10">a = 1</text>
+          <rect x="230" y="52" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
+          <text x="285" y="69" text-anchor="middle" fill="#fbbf24" font-family="monospace" font-size="10">v = true (vol)</text>
+          <rect x="230" y="106" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
+          <text x="285" y="123" text-anchor="middle" fill="#dce5f0" font-family="monospace" font-size="10">读 v</text>
+          <rect x="60" y="106" width="110" height="26" rx="7" fill="#0a0e13" stroke="#2c3d52"/>
+          <text x="115" y="123" text-anchor="middle" fill="#34d399" font-family="monospace" font-size="10">读 a = 1 ✓</text>
+          <path d="M170 65 Q200 65 228 65" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
+          <path d="M285 80 Q285 92 285 104" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
+          <path d="M285 134 Q200 134 172 119" stroke="#2dd4bf" stroke-width="1.8" fill="none"/>
+          <text x="200" y="152" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">happens-before · volatile · DCL · 线程状态机</text>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>JMM Lab · Java 并发实验室</h2><span class="badge live">● 在线</span></div>
+        <p class="desc">把《并发编程实战》第 16 章画成可点的动画：8 条 happens-before 规则图解、volatile 可见性动画、20 万次交错重排实验、线程状态机、DCL 单例步进推演。</p>
+        <div class="tags"><span>happens-before</span><span>volatile</span><span>重排序</span><span>DCL</span></div>
+        <div class="acts">
+          <a class="btn go" href="apps/jmm-lab/">打开应用 →</a>
+          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LogLens -->
+    <div class="app-card">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <text x="16" y="66" fill="#9fb3c8" font-family="monospace" font-size="9">gateway-http-3</text>
+          <circle cx="180" cy="62" r="4" fill="#4f8ef7"/><circle cx="330" cy="62" r="4.5" fill="#f87171"/>
+          <text x="16" y="98" fill="#9fb3c8" font-family="monospace" font-size="9">order-wrk-1</text>
+          <circle cx="210" cy="94" r="4" fill="#4f8ef7"/><circle cx="260" cy="94" r="4.5" fill="#f87171"/>
+          <text x="16" y="130" fill="#9fb3c8" font-family="monospace" font-size="9">inv-wrk-2</text>
+          <circle cx="240" cy="126" r="4" fill="#4f8ef7"/>
+          <rect x="270" y="121" width="48" height="10" rx="4" fill="rgba(251,191,36,0.4)" stroke="rgba(251,191,36,0.8)"/>
+          <text x="336" y="130" fill="#fbbf24" font-family="monospace" font-size="9">⏱ 1.4s</text>
+          <line x1="120" y1="142" x2="370" y2="142" stroke="#1f2b3a"/>
+          <text x="120" y="156" fill="#3a4a60" font-family="monospace" font-size="8">T+0</text>
+          <text x="340" y="156" fill="#3a4a60" font-family="monospace" font-size="8">+3.8s</text>
+          <text x="200" y="28" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">多服务日志 → 时间线瀑布 · gap 标记 · ERROR 聚类</text>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>LogLens · 日志时间线分析器</h2><span class="badge live">● 在线</span></div>
+        <p class="desc">粘贴多行分布式日志：自动识别三种时间戳格式、按线程/服务分泳道渲染瀑布图、标记可疑 gap、按时长画横条、ERROR 按模板聚类。</p>
+        <div class="tags"><span>故障排查</span><span>时间线</span><span>gap 分析</span><span>ERROR 聚类</span></div>
+        <div class="acts">
+          <a class="btn go" href="apps/loglens/">打开应用 →</a>
+          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 规划中 -->
     <div class="app-card" style="opacity:.75;border-style:dashed">
       <span class="cover">
         <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
           <rect width="400" height="168" fill="#0d1420"/>
-          <rect x="70" y="56" width="60" height="7" rx="3.5" fill="#4f8ef7" opacity=".8"/>
-          <rect x="150" y="56" width="90" height="7" rx="3.5" fill="#2dd4bf" opacity=".8"/>
-          <rect x="120" y="76" width="50" height="7" rx="3.5" fill="#fbbf24" opacity=".8"/>
-          <rect x="185" y="76" width="110" height="7" rx="3.5" fill="#a78bfa" opacity=".8"/>
-          <rect x="95" y="96" width="80" height="7" rx="3.5" fill="#f472b6" opacity=".8"/>
-          <rect x="190" y="96" width="60" height="7" rx="3.5" fill="#34d399" opacity=".8"/>
-          <line x1="70" y1="120" x2="330" y2="120" stroke="#1f2b3a" stroke-width="1"/>
-          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">log → timeline · 施工中</text>
+          <text x="200" y="80" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="12">curl -X POST -H 'Content-Type:…'</text>
+          <path d="M160 100 h34 M186 96l8 4-8 4" stroke="#2c3d52" stroke-width="2" fill="none"/>
+          <text x="284" y="104" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="11">HttpClient h = …</text>
+          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">curl ↔ Java/Go/Python · 施工中</text>
         </svg>
       </span>
       <div class="card-body">
-        <div class="card-top"><h2>日志时间线分析器</h2><span class="badge plan">◐ 规划中</span></div>
-        <p class="desc">粘贴多行分布式日志 → 自动解析时间戳、按服务聚合 → 渲染调用时间线瀑布图。故障排查时肉眼对日志对到眼花的日子到此为止。</p>
-        <div class="tags"><span>排查</span><span>Timeline</span><span>分布式</span></div>
+        <div class="card-top"><h2>curl2code</h2><span class="badge plan">◐ 规划中</span></div>
+        <p class="desc">curl 命令 ↔ Java OkHttp / Python / Go 代码互转，后端日常刚需。做完之前，这里只有一句诚实的「施工中」。</p>
+        <div class="tags"><span>curl</span><span>OkHttp</span><span>代码生成</span></div>
         <div class="acts">
           <button class="btn" disabled>待上线</button>
         </div>

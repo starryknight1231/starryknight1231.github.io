@@ -9,8 +9,11 @@
 |------|------|------|
 | **DevBox** 开发者工具箱 | [`/apps/devbox/`](apps/devbox/) | 16 个高频工具：JSON 格式化（错误定位行列）、Base64 / URL / HTML 实体、JWT 解码、正则测试（高亮+捕获组+替换）、SHA 哈希、时间戳、进制、颜色（含色阶）、UUID、密码熵值、Markdown 预览、HTTP 状态码速查… |
 | **System Lab** 系统设计实验室 | [`/apps/system-lab/`](apps/system-lab/) | 4 个交互演示：一致性哈希（CH vs 取模迁移率实测、虚拟节点）、四种限流算法同屏对比（固定窗口/滑动窗口/令牌桶/漏桶）、雪花 ID（位级拆解+时钟回拨模拟）、布隆过滤器（理论 vs 实测误判率） |
+| **RegexVis** 正则可视化 | [`/apps/regexvis/`](apps/regexvis/) | 正则 → 逐段中文解释 + Thompson NFA 状态机图 + 逐字符匹配动画（ε-闭包可视化、贪婪/懒惰分支走向、前瞻断言） |
+| **JMM Lab** Java 并发实验室 | [`/apps/jmm-lab/`](apps/jmm-lab/) | 8 条 happens-before 规则图解、volatile 可见性动画（主存/工作内存同步过程）、20 万次交错重排实验、线程六状态机（点击看代码与误区）、DCL 单例步进推演 |
+| **LogLens** 日志时间线分析器 | [`/apps/loglens/`](apps/loglens/) | 粘贴多行分布式日志：自动识别 3 种时间戳格式、按线程/服务分泳道渲染瀑布图、标记可疑 gap、按时长画横条、ERROR 按模板聚类 |
 
-**规划中**：正则可视化（NFA 状态机图）、日志时间线分析器（分布式日志 → 瀑布图）。
+**规划中**：curl2code（curl ↔ Java/Go/Python 代码互转）。
 做完才上线，不放占位假链接。
 
 ## 设计原则
