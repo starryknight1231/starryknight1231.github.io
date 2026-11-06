@@ -23,6 +23,7 @@ body {
 .topbar nav a { color: var(--muted); font-size: 13px; margin-left: 20px; text-decoration: none; }
 .topbar nav a:hover { color: var(--accent); }
 .topbar nav a:first-child { color: var(--accent); }
+.topbar nav .who { color: var(--faint); font-size: 12px; margin-left: 20px; }
 
 .page { max-width: 1080px; margin: 0 auto; padding: 22px 24px 48px; }
 

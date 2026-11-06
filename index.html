@@ -6,6 +6,19 @@
 <meta name="description" content="Starry Lab — 围绕系统设计的交互演示，覆盖数据结构、并发模型、正则引擎与日志分析。">
 <meta name="author" content="starryknight1231">
 <meta name="theme-color" content="#f2efe8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Starry Lab">
+<meta property="og:title" content="Starry Lab · 系统设计交互式演示集">
+<meta property="og:description" content="一致性哈希、限流、Raft、MVCC、TCP、正则 NFA——可动手的系统设计演示：参数拖一下、节点删一个，数字当场算出来。零依赖，内核可用 node tests/run.mjs 直接测试。">
+<meta property="og:url" content="https://starryknight1231.github.io/">
+<meta property="og:image" content="https://starryknight1231.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Starry Lab · 系统设计交互式演示集">
+<meta name="twitter:description" content="可动手的系统设计演示：Raft、MVCC、TCP、正则 NFA。零依赖，内核可测。">
+<meta name="twitter:image" content="https://starryknight1231.github.io/assets/og.png">
 <title>Starry Lab · 系统设计交互演示集</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%23f2efe8' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
@@ -311,6 +324,7 @@
       <a href="#questions">问题</a>
       <a href="#constraints">工程约束</a>
       <a href="#faq">常见问题</a>
+      <a href="https://github.com/starryknight1231/starryknight1231.github.io" target="_blank" rel="noopener">源码 ↗</a>
     </nav>
     <a class="nav-cta" href="#modules">开始浏览 <span>→</span></a>
   </div>
@@ -334,6 +348,7 @@
           <div class="fact"><span>第三方依赖</span><b>无</b></div>
           <div class="fact"><span>适配</span><b>桌面与窄屏</b></div>
           <div class="fact"><span>源码</span><b>可读</b></div>
+          <p>个人独立构建——选题、模拟内核、交互与文案出自一人之手，源码与测试全部公开在 <a href="https://github.com/starryknight1231/starryknight1231.github.io" target="_blank" rel="noopener">GitHub</a>。</p>
         </aside>
       </div>
 
@@ -384,7 +399,7 @@
       <div class="showcase is-in" id="module-panel" role="tabpanel" aria-labelledby="tab-0">
         <div class="frame showcase-frame">
           <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr" id="module-addr">lab / devbox</span></div>
-          <img id="module-shot" src="assets/shots/devbox.png" alt="DevBox 界面">
+          <img id="module-shot" src="assets/shots/devbox.png" alt="DevBox 界面" loading="lazy" decoding="async">
         </div>
         <div class="info">
           <div class="info-no"><span><b id="module-no">01</b> / <span id="module-cat">Toolkit</span></span><span id="module-stat">16 TOOLS</span></div>
@@ -489,6 +504,17 @@
             </div>
           </div>
         </article>
+        <article class="p-card">
+          <span class="eyebrow">03 / Built by one</span>
+          <h3>一个人，从问题到像素</h3>
+          <p>选题、模拟内核、交互与文案由个人独立完成。这个站本身也是作品：它的源码就是简历的附录——内核不碰 DOM，可以在 Node 里一键验证。</p>
+          <div class="p-visual">
+<pre class="code"><span>$ node tests/run.mjs</span>
+
+  78 passed · 0 failed · 0.0s
+  <i>— Raft / MVCC / 正则 三套内核测试</i></pre>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -515,6 +541,10 @@
       </div>
       <div class="faq-list">
         <details class="faq-item" open>
+          <summary>这是什么？谁做的？</summary>
+          <p>Starry Lab 是一个个人作品：八个应用的选题、交互、模拟内核与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
+        </details>
+        <details class="faq-item">
           <summary>需要安装或登录吗？</summary>
           <p>不需要，不请求账号。</p>
         </details>
@@ -569,9 +599,10 @@
       </div>
       <div class="foot-col">
         <h4>资源</h4>
-        <a href="https://github.com/starryknight1231" target="_blank" rel="noopener">GitHub</a>
-        <a href="README.md">项目说明</a>
-        <a href="https://github.com/starryknight1231" target="_blank" rel="noopener">MIT License</a>
+        <a href="https://github.com/starryknight1231/starryknight1231.github.io" target="_blank" rel="noopener">GitHub 仓库</a>
+        <a href="https://github.com/starryknight1231/starryknight1231.github.io#readme" target="_blank" rel="noopener">项目说明</a>
+        <a href="LICENSE">MIT License</a>
+        <a href="tests/run.mjs" target="_blank" rel="noopener">内核测试源码</a>
       </div>
     </div>
     <div class="foot-bottom">

@@ -82,7 +82,7 @@
             E(cur, g.s); E(g.e, g.s); // 循环
             const E0 = S(node.end);
             E(cur, E0); E(g.e, E0);
-            E(S0, E0); // 跳过（min=0 时才可能用到，画出来直观）
+            if (min === 0) E(S0, E0); // 跳过整段重复（min=0 才允许，否则 a+ 会误接受空串）
             cur = E0;
           } else {
             for (let k = 0; k < max - min; k++) {
