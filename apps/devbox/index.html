@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DevBox — 纯本地运行的开发者工具箱：JSON、Base64、时间戳、正则、颜色、哈希等 16 个常用工具">
+<title>DevBox · 开发者工具箱</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%234f8ef7' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-logo">
+        <svg viewBox="0 0 32 32" width="26" height="26"><rect width="32" height="32" rx="7" fill="#121926"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#4f8ef7" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <div>
+        <div class="brand-name">DevBox</div>
+        <div class="brand-sub">开发者工具箱</div>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="search" type="text" placeholder="搜索工具… ( / )" autocomplete="off" spellcheck="false">
+    </div>
+    <nav id="nav" class="nav"></nav>
+    <div class="sidebar-foot">16 个工具 · 全部本地处理<br>数据不会离开你的浏览器</div>
+  </aside>
+  <main class="main">
+    <header class="tool-head">
+      <div class="tool-head-icon" id="tool-icon"></div>
+      <div>
+        <h1 id="tool-title">DevBox</h1>
+        <p id="tool-desc">选择左侧任意工具开始</p>
+      </div>
+    </header>
+    <div id="tool-body" class="tool-body"></div>
+    <footer class="main-foot">DevBox · 用 ZCode 构建 · <a href="https://github.com" target="_blank" rel="noopener" style="display:none">GitHub</a><span id="home-hint">按 <kbd>/</kbd> 搜索，点击左侧工具或直接输入 <kbd>#/工具id</kbd> 跳转</span></footer>
+  </main>
+</div>
+<div id="toast" class="toast" role="status"></div>
+
+<script src="js/app.js"></script>
+<script src="js/tools/encoders.js"></script>
+<script src="js/tools/converters.js"></script>
+<script src="js/tools/text.js"></script>
+<script src="js/tools/generators.js"></script>
+<script src="js/tools/web.js"></script>
+</body>
+</html>

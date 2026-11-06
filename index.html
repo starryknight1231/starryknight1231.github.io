@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="后端工程实验室 — 在线开发者工具与交互式系统设计演示，全部纯前端、本地计算、开源">
+<title>后端工程实验室 · 作品导航</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0f14'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%232dd4bf' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0b0f14; --panel: #121926; --panel-2: #0f1520; --border: #1f2b3a;
+    --border-strong: #2c3d52; --text: #dce5f0; --muted: #7e8ea3; --faint: #55637a;
+    --accent: #4f8ef7; --teal: #2dd4bf; --amber: #fbbf24;
+    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); font-family: var(--sans);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
+    background-size: 26px 26px;
+    min-height: 100vh;
+  }
+  a { text-decoration: none; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px 40px; }
+
+  /* 顶部 */
+  header.site {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0; border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
+  .brand svg { display: block; }
+  .nav-links a { color: var(--muted); font-size: 13.5px; margin-left: 22px; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Hero */
+  .hero { padding: 72px 0 56px; }
+  .hero .tag {
+    display: inline-block; font-family: var(--mono); font-size: 12px; color: var(--teal);
+    border: 1px solid rgba(45,212,191,.4); background: rgba(45,212,191,.08);
+    border-radius: 20px; padding: 3px 12px; margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; line-height: 1.25; letter-spacing: 0.5px; }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, #4f8ef7, #2dd4bf);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { color: var(--muted); font-size: 15.5px; margin-top: 16px; max-width: 640px; }
+  .hero p b { color: var(--text); }
+  .chips { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px;
+  }
+  .chip b { color: var(--teal); }
+
+  /* 卡片 */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 30px; } }
+  .app-card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    display: flex; flex-direction: column;
+  }
+  .app-card:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: 0 12px 40px rgba(0,0,0,.35); }
+  .cover { display: block; height: 168px; background: var(--panel-2); border-bottom: 1px solid var(--border); overflow: hidden; }
+  .cover svg { width: 100%; height: 100%; display: block; }
+  .card-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+  .card-top { display: flex; align-items: center; gap: 10px; }
+  .card-top h2 { font-size: 17px; }
+  .badge {
+    font-size: 11px; padding: 1px 9px; border-radius: 20px; font-family: var(--mono); font-weight: 600;
+  }
+  .badge.live { background: rgba(52,211,153,.15); color: #34d399; }
+  .badge.plan { background: rgba(251,191,36,.15); color: var(--amber); }
+  .card-body p.desc { color: var(--muted); font-size: 13.5px; margin: 8px 0 14px; flex: 1; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tags span {
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    border: 1px solid var(--border); border-radius: 5px; padding: 2px 7px;
+  }
+  .acts { display: flex; gap: 10px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;
+    border-radius: 8px; font-size: 13.5px; cursor: pointer; font-family: inherit;
+    border: 1px solid var(--border-strong); transition: all 0.12s; background: var(--panel-2); color: var(--text);
+  }
+  .btn.go { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .btn.go:hover { filter: brightness(1.12); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* 页脚 */
+  footer.site {
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border);
+    color: var(--faint); font-size: 12.5px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  footer.site a { color: var(--muted); }
+  footer.site a:hover { color: var(--accent); }
+  .foot-mono { font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" width="24" height="24"><rect width="32" height="32" rx="7" fill="#121926"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#2dd4bf" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Backend&nbsp;Lab
+    </div>
+    <nav class="nav-links">
+      <a href="#apps">应用</a>
+      <a id="gh-nav" href="#" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="tag">$ whoami → 后端工程师 / 架构方向</span>
+    <h1>把系统设计，<br>变成<span class="grad">可以动手玩的演示</span></h1>
+    <p>
+      这里是我维护的一组<b>在线工具与交互式演示</b>：每一个都是<b>纯前端实现、数据本地计算、源码开放</b>。
+      与其写「XX 原理详解」，我更愿意把它做成能点开就玩的东西——一致性哈希怎么迁移、令牌桶怎么扛突发，拖一下就知道。
+    </p>
+    <div class="chips">
+      <span class="chip">在线应用 <b>2</b></span>
+      <span class="chip">规划中 <b>2</b></span>
+      <span class="chip">零依赖 · 无后端 · 数据不出浏览器</span>
+      <span class="chip">持续生长中</span>
+    </div>
+  </section>
+
+  <section id="apps" class="grid">
+    <!-- DevBox -->
+    <div class="app-card">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <rect x="60" y="34" width="280" height="118" rx="10" fill="#121926" stroke="#1f2b3a"/>
+          <rect x="60" y="34" width="280" height="24" rx="10" fill="#0f1520"/>
+          <circle cx="76" cy="46" r="4" fill="#f87171"/><circle cx="90" cy="46" r="4" fill="#fbbf24"/><circle cx="104" cy="46" r="4" fill="#34d399"/>
+          <text x="200" y="50" text-anchor="middle" fill="#7e8ea3" font-family="monospace" font-size="10">devbox — 80×24</text>
+          <text x="80" y="82" fill="#4f8ef7" font-family="monospace" font-size="16">$ devbox</text>
+          <text x="80" y="106" fill="#dce5f0" font-family="monospace" font-size="13">16 tools ready ✓</text>
+          <text x="80" y="130" fill="#2dd4bf" font-family="monospace" font-size="13">JSON · Base64 · Regex · Hash</text>
+          <rect x="330" y="94" width="3" height="14" fill="#4f8ef7"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></rect>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>DevBox · 开发者工具箱</h2><span class="badge live">● 在线</span></div>
+        <p class="desc">16 个高频开发工具：JSON 格式化（错误定位到行列）、Base64、正则测试（高亮+捕获组）、SHA 哈希、时间戳、颜色转换…全部本地计算。</p>
+        <div class="tags"><span>JSON</span><span>Regex</span><span>WebCrypto</span><span>Hash Routing</span></div>
+        <div class="acts">
+          <a class="btn go" href="apps/devbox/">打开应用 →</a>
+          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Lab -->
+    <div class="app-card">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <circle cx="200" cy="84" r="52" fill="none" stroke="#1f2b3a" stroke-width="1.5"/>
+          <circle cx="200" cy="84" r="34" fill="none" stroke="#1f2b3a" stroke-width="1" stroke-dasharray="3 4"/>
+          <circle cx="200" cy="84" r="16" fill="none" stroke="#1f2b3a" stroke-width="1"/>
+          <g>
+            <circle cx="252" cy="84" r="7" fill="#4f8ef7"><animate attributeName="r" values="6;7.5;6" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="173.5" cy="49" r="7" fill="#2dd4bf"/>
+            <circle cx="153" cy="112" r="7" fill="#fbbf24"/>
+            <circle cx="251" cy="120" r="4" fill="#a78bfa"/>
+          </g>
+          <g fill="#dce5f0" font-family="monospace" font-size="9" opacity="0.85">
+            <circle cx="200" cy="68" r="2" fill="#4f8ef7"/><circle cx="214" cy="76" r="2" fill="#2dd4bf"/><circle cx="188" cy="95" r="2" fill="#fbbf24"/><circle cx="206" cy="102" r="2" fill="#a78bfa"/>
+          </g>
+          <text x="200" y="158" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="9">consistent-hashing / rate-limit / snowflake / bloom</text>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>System Lab · 系统设计实验室</h2><span class="badge live">● 在线</span></div>
+        <p class="desc">四个交互演示把面试高频题变成可玩的动画：一致性哈希（迁移率实测）、四种限流算法同屏对比、雪花 ID 位级拆解与时钟回拨、布隆过滤器误判率实验。</p>
+        <div class="tags"><span>一致性哈希</span><span>令牌桶/漏桶</span><span>雪花ID</span><span>布隆过滤器</span></div>
+        <div class="acts">
+          <a class="btn go" href="apps/system-lab/">打开应用 →</a>
+          <a class="btn ghost gh-src" href="#" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 规划中 1 -->
+    <div class="app-card" style="opacity:.75;border-style:dashed">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <text x="200" y="90" text-anchor="middle" fill="#55637a" font-family="monospace" font-size="30">(^ab|cd*)?$</text>
+          <circle cx="140" cy="110" r="14" fill="none" stroke="#2c3d52" stroke-width="1.5"/>
+          <path d="M154 110h30" stroke="#2c3d52" stroke-width="1.5"/>
+          <circle cx="198" cy="110" r="14" fill="none" stroke="#2c3d52" stroke-width="1.5"/>
+          <path d="M212 110h30" stroke="#2c3d52" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">NFA 状态机图 · 施工中</text>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>正则可视化</h2><span class="badge plan">◐ 规划中</span></div>
+        <p class="desc">正则表达式 → NFA 状态机图 + 逐段含义解释。做出来之前，我不放假的占位链接——这里只有一句诚实的「施工中」。</p>
+        <div class="tags"><span>Regex</span><span>NFA</span><span>Canvas</span></div>
+        <div class="acts">
+          <button class="btn" disabled>待上线</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 规划中 2 -->
+    <div class="app-card" style="opacity:.75;border-style:dashed">
+      <span class="cover">
+        <svg viewBox="0 0 400 168" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="168" fill="#0d1420"/>
+          <rect x="70" y="56" width="60" height="7" rx="3.5" fill="#4f8ef7" opacity=".8"/>
+          <rect x="150" y="56" width="90" height="7" rx="3.5" fill="#2dd4bf" opacity=".8"/>
+          <rect x="120" y="76" width="50" height="7" rx="3.5" fill="#fbbf24" opacity=".8"/>
+          <rect x="185" y="76" width="110" height="7" rx="3.5" fill="#a78bfa" opacity=".8"/>
+          <rect x="95" y="96" width="80" height="7" rx="3.5" fill="#f472b6" opacity=".8"/>
+          <rect x="190" y="96" width="60" height="7" rx="3.5" fill="#34d399" opacity=".8"/>
+          <line x1="70" y1="120" x2="330" y2="120" stroke="#1f2b3a" stroke-width="1"/>
+          <text x="200" y="140" text-anchor="middle" fill="#3a4a60" font-family="monospace" font-size="9">log → timeline · 施工中</text>
+        </svg>
+      </span>
+      <div class="card-body">
+        <div class="card-top"><h2>日志时间线分析器</h2><span class="badge plan">◐ 规划中</span></div>
+        <p class="desc">粘贴多行分布式日志 → 自动解析时间戳、按服务聚合 → 渲染调用时间线瀑布图。故障排查时肉眼对日志对到眼花的日子到此为止。</p>
+        <div class="tags"><span>排查</span><span>Timeline</span><span>分布式</span></div>
+        <div class="acts">
+          <button class="btn" disabled>待上线</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <span>© 2026 Backend Lab · 用 ZCode 构建，代码开源 · <a id="gh-foot" href="#" target="_blank" rel="noopener" class="foot-mono">github</a></span>
+    <span class="foot-mono">纯前端 · 本地计算 · MIT</span>
+  </footer>
+</div>
+
+<script>
+  // 部署到 username.github.io 后自动把源码链接指向本仓库；本地预览时隐藏
+  (function () {
+    const m = location.hostname.match(/^([\w-]+)\.github\.io$/);
+    const links = document.querySelectorAll('#gh-nav, #gh-foot, .gh-src');
+    if (m) {
+      const url = 'https://github.com/' + m[1] + '/' + m[1] + '.github.io';
+      links.forEach(a => { a.href = url; });
+    } else {
+      document.querySelectorAll('.gh-src').forEach(a => a.style.display = 'none');
+      const n = document.getElementById('gh-nav');
+      if (n) n.style.display = 'none';
+      const f = document.getElementById('gh-foot');
+      if (f) f.style.display = 'none';
+    }
+  })();
+</script>
+</body>
+</html>
