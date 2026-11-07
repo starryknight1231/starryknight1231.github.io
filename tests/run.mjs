@@ -1,11 +1,12 @@
 /* Starry Lab 内核测试 runner —— 零依赖，Node 18+ 直接运行：
      node tests/run.mjs
-   三个套件（Raft / MVCC / 正则）串行执行，失败时退出码非 0。 */
+   四个套件（Raft / MVCC / 正则 / 题库数据）串行执行，失败时退出码非 0。 */
 import raftSuite from './raft.test.mjs';
 import mvccSuite from './mvcc.test.mjs';
 import regexSuite from './regex.test.mjs';
+import qaSuite from './qa.test.mjs';
 
-const suites = [raftSuite, mvccSuite, regexSuite];
+const suites = [raftSuite, mvccSuite, regexSuite, qaSuite];
 const t0 = Date.now();
 let pass = 0, fail = 0;
 const failed = [];
