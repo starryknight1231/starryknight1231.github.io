@@ -88,19 +88,8 @@
   .fact b { font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
   .hero-facts p { margin: 14px 0 0; font-size: 11.5px; line-height: 1.65; color: var(--faint); }
 
-  /* 首屏展示台 */
-  .hero-stage {
-    position: relative; margin-top: 54px; padding: 14px 22px 0;
-    background: var(--band); border: 1px solid var(--line-strong); border-radius: 22px; overflow: hidden;
-  }
-  .stage-top {
-    display: flex; justify-content: space-between; gap: 16px; padding: 4px 2px 11px;
-    border-bottom: 1px solid rgba(31,28,25,.10);
-    font-family: var(--mono); font-size: 9px; letter-spacing: .13em; text-transform: uppercase; color: var(--faint);
-  }
-  .stage-canvas { position: relative; aspect-ratio: 1074 / 520; }
+  /* 首屏 */
   .frame { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 11px; overflow: hidden; box-shadow: 0 28px 60px rgba(31,28,25,.16); }
-  .hero-stage .frame { position: absolute; margin: 0; }
   .frame .chrome { height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 11px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
   .dots { display: flex; gap: 5px; }
   .dots i { width: 6px; height: 6px; border-radius: 50%; background: #b98d82; }
@@ -113,18 +102,6 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .frame img { width: 100%; height: auto; }
-  .frame.main { width: 60%; left: 20%; top: 34px; z-index: 3; }
-  .frame.side { width: 38%; top: 112px; z-index: 2; }
-  .frame.left { left: -9%; }
-  .frame.right { right: -9%; }
-  .stage-chip {
-    position: absolute; left: 4%; bottom: 24px; z-index: 4;
-    display: inline-flex; align-items: center; gap: 7px; padding: 4px 9px;
-    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 5px;
-    font-family: var(--mono); font-size: 9px; letter-spacing: .04em; color: var(--muted);
-    box-shadow: 0 8px 20px rgba(31,28,25,.08);
-  }
-  .stage-chip::before { content: ""; width: 5px; height: 5px; background: var(--moss); }
 
   /* 通用分区 */
   .section { padding: 100px 0; }
@@ -364,10 +341,6 @@
     .section { padding: 76px 0; }
     .questions { padding: 72px 0; }
     .hero { padding-top: 52px; }
-    .stage-canvas { aspect-ratio: 4 / 3; }
-    .frame.main { width: 86%; left: 7%; top: 24px; }
-    .frame.side { display: none; }
-    .stage-chip { display: none; }
   }
   @media (max-width: 560px) {
     .container { width: calc(100% - 32px); }
@@ -375,9 +348,6 @@
     .hero .lead { font-size: 15px; }
     .hero-facts { grid-template-columns: 1fr 1fr; }
     .hero-facts p { display: none; }
-    .hero-stage { padding: 12px 14px 0; border-radius: 18px; }
-    .stage-top span:last-child { display: none; }
-    .frame.main { width: 92%; left: 4%; top: 12px; }
     .section-head h2 { font-size: 30px; }
     .info h3 { font-size: 25px; }
     .showcase .frame img { aspect-ratio: 1280 / 900; object-fit: cover; object-position: top; }
@@ -424,28 +394,6 @@
             <a class="btn primary" href="#qa">浏览题库 →</a>
             <a class="btn ghost" href="#labs">动手实验室</a>
           </div>
-        </div>
-      </div>
-
-      <div class="hero-stage" aria-label="应用界面预览">
-        <div class="stage-top">
-          <span>Starry Lab / Deck · Labs · Tools</span>
-          <span>50 道题解 · 5 实验室 + 3 工具</span>
-        </div>
-        <div class="stage-canvas">
-          <figure class="frame side left">
-            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / devbox</span></div>
-            <img src="assets/shots/devbox.png" alt="DevBox 正则测试界面" fetchpriority="high">
-          </figure>
-          <figure class="frame main">
-            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / system-lab</span></div>
-            <img src="assets/shots/systemlab.png" alt="System Lab 一致性哈希界面" fetchpriority="high">
-          </figure>
-          <figure class="frame side right">
-            <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr">lab / loglens</span></div>
-            <img src="assets/shots/loglens.png" alt="LogLens 时间线界面" fetchpriority="high">
-          </figure>
-          <span class="stage-chip">100 vnodes / 迁移率 25%</span>
         </div>
       </div>
     </div>
