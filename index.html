@@ -403,6 +403,7 @@
     <nav class="nav-links" aria-label="主导航">
       <a href="#qa">图解</a>
       <a href="#labs">实验室</a>
+      <a href="#tools">工具</a>
       <a href="#constraints">工程约束</a>
       <a href="#faq">常见问题</a>
       <a href="https://github.com/starryknight1231/starryknight1231.github.io" target="_blank" rel="noopener">源码 ↗</a>
@@ -428,8 +429,8 @@
 
       <div class="hero-stage" aria-label="应用界面预览">
         <div class="stage-top">
-          <span>Starry Lab / Labs &amp; Deck</span>
-          <span>8 道题解 · 8 个实验室</span>
+          <span>Starry Lab / Deck · Labs · Tools</span>
+          <span>50 道题解 · 5 实验室 + 3 工具</span>
         </div>
         <div class="stage-canvas">
           <figure class="frame side left">
@@ -572,29 +573,49 @@
         </div>
       </div>
 
-      <div class="tabs" role="tablist" aria-label="模块切换">
-        <button class="tab" role="tab" id="tab-0" aria-controls="module-panel" aria-selected="true"><span class="no">01</span>DevBox</button>
-        <button class="tab" role="tab" id="tab-1" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">02</span>System Lab</button>
-        <button class="tab" role="tab" id="tab-2" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">03</span>RegexVis</button>
-        <button class="tab" role="tab" id="tab-3" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">04</span>JMM Lab</button>
-        <button class="tab" role="tab" id="tab-4" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">05</span>LogLens</button>
-        <button class="tab" role="tab" id="tab-5" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">06</span>Raft Lab</button>
-        <button class="tab" role="tab" id="tab-6" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">07</span>MVCC Lab</button>
-        <button class="tab" role="tab" id="tab-7" aria-controls="module-panel" aria-selected="false" tabindex="-1"><span class="no">08</span>Wire Lab</button>
-      </div>
+      <div class="tabs" role="tablist" aria-label="实验室切换" id="labs-tabs"></div>
 
-      <div class="showcase is-in" id="module-panel" role="tabpanel" aria-labelledby="tab-0">
+      <div class="showcase is-in" id="labs-panel" role="tabpanel">
         <div class="frame showcase-frame">
-          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr" id="module-addr">lab / devbox</span></div>
-          <img id="module-shot" src="assets/shots/devbox.png" alt="DevBox 界面" loading="lazy" decoding="async">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr" id="labs-addr">lab / system-lab</span></div>
+          <img id="labs-shot" src="assets/shots/systemlab.png" alt="System Lab 界面" loading="lazy" decoding="async">
         </div>
         <div class="info">
-          <div class="info-no"><span><b id="module-no">01</b> / <span id="module-cat">Toolkit</span></span><span id="module-stat">16 TOOLS</span></div>
-          <h3 id="module-title">DevBox · 开发者工具箱</h3>
-          <p class="desc" id="module-desc">十六个常用开发工具，覆盖 JSON 格式化与错误行列定位、Base64 编解码、正则匹配与捕获组、SHA 哈希、时间戳与颜色转换。</p>
+          <div class="info-no"><span><b id="labs-no">01</b> / <span id="labs-cat">Systems</span></span><span id="labs-stat">04 DEMOS</span></div>
+          <h3 id="labs-title">System Lab · 系统设计实验室</h3>
+          <p class="desc" id="labs-desc">四个系统设计演示：一致性哈希迁移率实测、四种限流算法同屏对比、雪花 ID 位级拆解与时钟回拨模拟、布隆过滤器误判率实验。</p>
           <div class="info-foot">
-            <span class="info-stat" id="module-stat-2">No. 01</span>
-            <a class="info-open" id="module-open" href="apps/devbox/">打开应用 <span>→</span></a>
+            <span class="info-stat" id="labs-stat-2">No. 01</span>
+            <a class="info-open" id="labs-open" href="apps/system-lab/">打开应用 <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Toolbox / 效率工具</span>
+          <h2>不用学理论，打开就能用</h2>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="工具切换" id="tools-tabs"></div>
+
+      <div class="showcase is-in" id="tools-panel" role="tabpanel">
+        <div class="frame showcase-frame">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="addr" id="tools-addr">lab / devbox</span></div>
+          <img id="tools-shot" src="assets/shots/devbox.png" alt="DevBox 界面" loading="lazy" decoding="async">
+        </div>
+        <div class="info">
+          <div class="info-no"><span><b id="tools-no">01</b> / <span id="tools-cat">Toolkit</span></span><span id="tools-stat">16 TOOLS</span></div>
+          <h3 id="tools-title">DevBox · 开发者工具箱</h3>
+          <p class="desc" id="tools-desc">十六个常用开发工具，覆盖 JSON 格式化与错误行列定位、Base64 编解码、正则匹配与捕获组、SHA 哈希、时间戳与颜色转换。</p>
+          <div class="info-foot">
+            <span class="info-stat" id="tools-stat-2">No. 01</span>
+            <a class="info-open" id="tools-open" href="apps/devbox/">打开应用 <span>→</span></a>
           </div>
         </div>
       </div>
@@ -615,7 +636,7 @@
       <div class="faq-list">
         <details class="faq-item" open>
           <summary>这是什么？谁做的？</summary>
-          <p>Starry Lab 是一个个人作品：50 篇高频面试题图解、8 个交互实验室，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
+          <p>Starry Lab 是一个个人作品：50 篇高频面试题图解、5 个交互实验室、3 个效率工具，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
         </details>
         <details class="faq-item">
           <summary>零基础能看懂吗？</summary>
@@ -665,20 +686,21 @@
         <p>用运行结果说话。</p>
       </div>
       <div class="foot-col">
-        <h4>模块</h4>
-        <a href="apps/devbox/">DevBox</a>
+        <h4>实验室与工具</h4>
         <a href="apps/system-lab/">System Lab</a>
-        <a href="apps/regexvis/">RegexVis</a>
         <a href="apps/jmm-lab/">JMM Lab</a>
-        <a href="apps/loglens/">LogLens</a>
         <a href="apps/raft-lab/">Raft Lab</a>
         <a href="apps/mvcc-lab/">MVCC Lab</a>
         <a href="apps/wire-lab/">Wire Lab</a>
+        <a href="apps/devbox/">DevBox</a>
+        <a href="apps/regexvis/">RegexVis</a>
+        <a href="apps/loglens/">LogLens</a>
       </div>
       <div class="foot-col">
         <h4>索引</h4>
         <a href="#qa">题库图解</a>
         <a href="#labs">动手实验室</a>
+        <a href="#tools">效率工具</a>
         <a href="#constraints">工程约束</a>
         <a href="#faq">常见问题</a>
       </div>
@@ -707,102 +729,102 @@
 <script>
   const MODULES = [
     {
-      no: '01', cat: 'Toolkit', name: 'DevBox · 开发者工具箱',
+      no: '01', group: 'tool', cat: 'Toolkit', name: 'DevBox · 开发者工具箱',
       addr: 'lab / devbox', img: 'assets/shots/devbox.png', href: 'apps/devbox/',
       desc: '十六个常用开发工具，覆盖 JSON 格式化与错误行列定位、Base64 编解码、正则匹配与捕获组、SHA 哈希、时间戳与颜色转换。',
       stat: '16 TOOLS'
     },
     {
-      no: '02', cat: 'Systems', name: 'System Lab · 系统设计实验室',
+      no: '02', group: 'lab', cat: 'Systems', name: 'System Lab · 系统设计实验室',
       addr: 'lab / system-lab', img: 'assets/shots/systemlab.png', href: 'apps/system-lab/',
       desc: '四个系统设计演示：一致性哈希迁移率实测、四种限流算法同屏对比、雪花 ID 位级拆解与时钟回拨模拟、布隆过滤器误判率实验。',
       stat: '04 DEMOS'
     },
     {
-      no: '03', cat: 'Regex', name: 'RegexVis · 正则可视化',
+      no: '03', group: 'tool', cat: 'Regex', name: 'RegexVis · 正则可视化',
       addr: 'lab / regexvis', img: 'assets/shots/regexvis.png', href: 'apps/regexvis/',
       desc: '把正则表达式拆成逐段说明，绘制 Thompson NFA 状态机图，并以逐字符动画演示 ε-闭包与贪婪、懒惰分支的走向。',
       stat: 'NFA / CANVAS'
     },
     {
-      no: '04', cat: 'Concurrency', name: 'JMM Lab · Java 并发实验室',
+      no: '04', group: 'lab', cat: 'Concurrency', name: 'JMM Lab · Java 并发实验室',
       addr: 'lab / jmm-lab', img: 'assets/shots/jmm.png', href: 'apps/jmm-lab/',
       desc: 'Java 内存模型的交互演示：八条 happens-before 规则图解、volatile 可见性动画、二十万次交错重排实验、线程状态机与 DCL 单例推演。',
       stat: '08 RULES'
     },
     {
-      no: '05', cat: 'Logs', name: 'LogLens · 日志时间线分析器',
+      no: '05', group: 'tool', cat: 'Logs', name: 'LogLens · 日志时间线分析器',
       addr: 'lab / loglens', img: 'assets/shots/loglens.png', href: 'apps/loglens/',
       desc: '面向分布式日志的时间线分析：识别三种时间戳格式，按线程与服务分泳道渲染瀑布图，标记可疑 gap，并按模板聚类 ERROR 日志。',
       stat: '03 FORMATS'
     },
     {
-      no: '06', cat: 'Consensus', name: 'Raft Lab · 共识协议实验室',
+      no: '06', group: 'lab', cat: 'Consensus', name: 'Raft Lab · 共识协议实验室',
       addr: 'lab / raft-lab', img: 'assets/shots/raft.png', href: 'apps/raft-lab/',
       desc: '事件驱动的 Raft 模型：随机选举超时与固定超时的活锁对照、日志复制到提交的多数派计数、可以关掉的两条安全规则、分区之后哪一侧还能写。',
       stat: '04 DEMOS'
     },
     {
-      no: '07', cat: 'Transactions', name: 'MVCC Lab · 事务隔离实验室',
+      no: '07', group: 'lab', cat: 'Transactions', name: 'MVCC Lab · 事务隔离实验室',
       addr: 'lab / mvcc-lab', img: 'assets/shots/mvcc.png', href: 'apps/mvcc-lab/',
       desc: '隔离级别的真实语义：PG 快照可见性逐步判定、脏读 / 不可重复读 / 幻读 / 丢失更新由引擎按执行历史判出、写偏斜的三种堵法、优先图环检测。',
       stat: '05 LEVELS'
     },
     {
-      no: '08', cat: 'Network', name: 'Wire Lab · 网络传输实验室',
+      no: '08', group: 'lab', cat: 'Network', name: 'Wire Lab · 网络传输实验室',
       addr: 'lab / wire-lab', img: 'assets/shots/wire.png', href: 'apps/wire-lab/',
       desc: '传输层与应用层的时序仿真：TCP 握手与挥手的序号 / ACK 实时推导、逐 RTT 的 cwnd 曲线、五种投递模型的页面加载对比、TLS 各版本的握手轮次与首字节时间。',
       stat: '04 MODELS'
     }
   ];
 
-  const tabs = [...document.querySelectorAll('#labs .tab')];
-  const panel = document.getElementById('module-panel');
-  const shot = document.getElementById('module-shot');
-  const addr = document.getElementById('module-addr');
-  const noEl = document.getElementById('module-no');
-  const catEl = document.getElementById('module-cat');
-  const titleEl = document.getElementById('module-title');
-  const descEl = document.getElementById('module-desc');
-  const statEl = document.getElementById('module-stat');
-  const stat2El = document.getElementById('module-stat-2');
-  const openEl = document.getElementById('module-open');
-
   MODULES.forEach(m => { const img = new Image(); img.src = m.img; });
 
-  function render(i, focusTab) {
-    const m = MODULES[i];
-    tabs.forEach((t, j) => {
-      t.setAttribute('aria-selected', String(i === j));
-      t.tabIndex = i === j ? 0 : -1;
-    });
-    if (focusTab) tabs[i].focus();
-    panel.setAttribute('aria-labelledby', 'tab-' + i);
-    shot.src = m.img;
-    shot.alt = m.name + ' 界面';
-    addr.textContent = m.addr;
-    noEl.textContent = m.no;
-    catEl.textContent = m.cat;
-    titleEl.textContent = m.name;
-    descEl.textContent = m.desc;
-    statEl.textContent = m.stat;
-    stat2El.textContent = 'No. ' + m.no;
-    openEl.href = m.href;
-    panel.classList.remove('is-in');
-    void panel.offsetWidth;
-    panel.classList.add('is-in');
-  }
+  /* 展示组件：实验室 / 工具 两组共用同一套渲染逻辑 */
+  function makeShowcase(prefix, group) {
+    const list = MODULES.filter(m => m.group === group);
+    const tabsEl = document.getElementById(prefix + '-tabs');
+    const panel = document.getElementById(prefix + '-panel');
+    tabsEl.innerHTML = list.map((m, i) =>
+      `<button class="tab" role="tab" id="${prefix}-tab-${i}" aria-controls="${prefix}-panel" aria-selected="${i === 0}"><span class="no">${String(i + 1).padStart(2, '0')}</span>${m.name.split(' ·')[0]}</button>`).join('');
+    const tabs = [...tabsEl.querySelectorAll('.tab')];
 
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => render(i));
-    tab.addEventListener('keydown', e => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      e.preventDefault();
-      const next = (i + (e.key === 'ArrowRight' ? 1 : MODULES.length - 1)) % MODULES.length;
-      render(next, true);
+    function render(i, focusTab) {
+      const m = list[i];
+      tabs.forEach((t, j) => {
+        t.setAttribute('aria-selected', String(i === j));
+        t.tabIndex = i === j ? 0 : -1;
+      });
+      if (focusTab) tabs[i].focus();
+      panel.setAttribute('aria-labelledby', prefix + '-tab-' + i);
+      const shot = document.getElementById(prefix + '-shot');
+      shot.src = m.img;
+      shot.alt = m.name + ' 界面';
+      document.getElementById(prefix + '-addr').textContent = m.addr;
+      document.getElementById(prefix + '-no').textContent = m.no;
+      document.getElementById(prefix + '-cat').textContent = m.cat;
+      document.getElementById(prefix + '-title').textContent = m.name;
+      document.getElementById(prefix + '-desc').textContent = m.desc;
+      document.getElementById(prefix + '-stat').textContent = m.stat;
+      document.getElementById(prefix + '-stat-2').textContent = 'No. ' + m.no;
+      document.getElementById(prefix + '-open').href = m.href;
+      panel.classList.remove('is-in');
+      void panel.offsetWidth;
+      panel.classList.add('is-in');
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => render(i));
+      tab.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        render((i + (e.key === 'ArrowRight' ? 1 : list.length - 1)) % list.length, true);
+      });
     });
-  });
-  render(0);
+    render(0);
+  }
+  makeShowcase('labs', 'lab');
+  makeShowcase('tools', 'tool');
 
   /* ---------- 题库图解 ---------- */
   const CAT_COLORS = {
