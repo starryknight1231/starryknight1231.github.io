@@ -560,19 +560,36 @@
     'dist-tx': ['mq', 'cap'],
     'raft-election': ['cap'],
     'seckill': ['mq', 'redis-lock', 'idempotent'],
+    'equals-hashcode': ['hashmap', 'string-immutable'],
+    'exception': ['spring-tx'],
+    'generic-erasure': ['hashmap', 'classloader'],
+    'aqs': ['synchronized', 'juc-helpers', 'cas'],
+    'juc-helpers': ['aqs', 'thread-pool', 'thread-states'],
+    'redis-zset': ['redis-fast', 'index-btree'],
+    'redis-sentinel': ['mysql-replication', 'cap'],
+    'http2-3': ['https', 'url'],
+    'websocket': ['http2-3'],
+    'rate-limit': ['seckill', 'redis-fast'],
+    'bloom-filter': ['cache'],
+    'zero-copy': ['io-multiplexing', 'gc'],
   };
 
   /* 全站学习顺序：由浅入深——OS/网络基础 → Java 基础 → 数据库 → Redis → 并发 → 框架 → 分布式与系统设计综合。
      门户与测试都按这份清单排序；50 个 id 必须与题库一一对应（测试会校验）。 */
   w.QA_ORDER = [
     'process-thread', 'udp-vs-tcp', 'tcp', 'http-status', 'cookie-session-jwt', 'url', 'https',
-    'tcp-2msl', 'tcp-reliable', 'tcp-sticky', 'virtual-memory', 'io-multiplexing',
-    'string-immutable', 'hashmap', 'jvm-memory', 'gc', 'classloader',
+    'http2-3', 'websocket',
+    'tcp-2msl', 'tcp-reliable', 'tcp-sticky', 'virtual-memory', 'io-multiplexing', 'zero-copy',
+    'string-immutable', 'equals-hashcode', 'exception', 'hashmap', 'jvm-memory', 'gc', 'classloader',
+    'generic-erasure',
     'mysql-engine', 'acid', 'isolation', 'index-btree', 'index-cluster', 'index-invalid',
     'mysql-replication', 'sharding',
-    'redis-fast', 'cache', 'redis-persistence', 'redis-eviction', 'redis-consistency', 'redis-lock',
-    'thread-states', 'volatile', 'thread-pool', 'synchronized', 'cas', 'threadlocal', 'deadlock', 'chm',
+    'redis-fast', 'redis-zset', 'cache', 'bloom-filter', 'redis-persistence', 'redis-eviction',
+    'redis-consistency', 'redis-lock', 'redis-sentinel',
+    'thread-states', 'volatile', 'thread-pool', 'juc-helpers', 'synchronized', 'cas', 'aqs',
+    'threadlocal', 'deadlock', 'chm',
     'spring-ioc-aop', 'spring-tx', 'spring-bean',
-    'hash-ring', 'snowflake', 'cap', 'mq', 'idempotent', 'dist-tx', 'raft-election', 'seckill',
+    'hash-ring', 'snowflake', 'rate-limit', 'cap', 'mq', 'idempotent', 'dist-tx', 'raft-election',
+    'seckill',
   ];
 })(typeof window !== 'undefined' ? window : globalThis);

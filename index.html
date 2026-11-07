@@ -283,6 +283,31 @@
   .qa-rel-a { display: inline-block; margin: 0 8px 6px 0; padding: 4px 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 99px; font-size: 12px; color: var(--muted); }
   .qa-rel-a:hover { color: var(--accent); border-color: var(--accent); }
 
+  /* 科幻 HUD 层 */
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2.5px; width: 0; z-index: 200; background: linear-gradient(90deg, var(--accent), var(--teal)); transition: width .08s linear; pointer-events: none; }
+  .term-line { font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .04em; margin-top: 12px; min-height: 17px; }
+  .term-line .ok { color: var(--moss); font-weight: 700; }
+  .term-line .cursor { display: inline-block; width: 7px; height: 13px; background: var(--accent); vertical-align: -2px; margin-left: 2px; animation: qa-blink 1.1s steps(1) infinite; }
+  @keyframes qa-blink { 50% { opacity: 0; } }
+  .hud { margin-left: auto; display: flex; gap: 20px; font-family: var(--mono); text-align: right; }
+  .hud b { display: block; font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: .02em; line-height: 1.1; }
+  .hud span { display: block; font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+  .qa-card { position: relative; }
+  .qa-card::after { content: ""; position: absolute; inset: -1px; border-radius: 17px; padding: 1.2px; background: linear-gradient(120deg, transparent 25%, rgba(168,68,44,.6) 50%, rgba(47,107,96,.45) 65%, transparent 85%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .4s; pointer-events: none; }
+  .qa-card:hover::after { opacity: 1; }
+  .qa-card.is-open::after { opacity: .45; }
+  .qa-detail { position: relative; overflow: hidden; }
+  .qa-card.is-open .qa-detail::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); animation: qa-scan .8s ease-out 1; pointer-events: none; }
+  @keyframes qa-scan { from { top: 0; opacity: 1; } to { top: calc(100% - 2px); opacity: 0; } }
+  .qa-stage { position: relative; }
+  .qa-stage::before, .qa-stage::after { content: ""; position: absolute; width: 15px; height: 15px; pointer-events: none; z-index: 2; }
+  .qa-stage::before { top: -1px; left: -1px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+  .qa-stage::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-progress { transition: none; }
+    .qa-card.is-open .qa-detail::before { animation: none; opacity: 0; }
+  }
+
   /* 窄屏：目录浮层 */
   @media (max-width: 1180px) {
     .qa-body { grid-template-columns: 1fr; }
@@ -335,6 +360,7 @@
 </style>
 </head>
 <body>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 <header class="nav">
   <div class="container nav-inner">
     <a class="brand" href="#top" aria-label="Starry Lab 首页">
@@ -363,6 +389,7 @@
         </div>
         <p>每一步只讲一件事，术语就地解释，初级也能一路看懂；看完图，再跳进实验室亲手验证。</p>
       </div>
+      <div class="term-line" id="term-line" aria-hidden="true"></div>
 
       <div class="tabs" role="tablist" aria-label="题目分类过滤" id="qa-tabs">
         <button class="tab" role="tab" data-cat="全部" aria-selected="true">全部</button>
@@ -380,6 +407,7 @@
         <label class="review-toggle" for="review-mode" title="收起图解，只滚题面与 30 秒答案，快速过卡">
           <input type="checkbox" id="review-mode"> 快速复习模式
         </label>
+        <div class="hud" id="qa-hud" aria-hidden="true"></div>
       </div>
 
       <div class="qa-body">
@@ -391,7 +419,7 @@
       </div>
 
       <div class="coming">
-        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 50 道高频经典，由浅入深排序</span>
+        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 62 道高频经典，由浅入深排序</span>
         <span class="badge">持续增加</span>
       </div>
     </div>
@@ -540,7 +568,7 @@
       <div class="faq-list">
         <details class="faq-item" open>
           <summary>这是什么？谁做的？</summary>
-          <p>Starry Lab 是一个个人作品：50 篇高频面试题图解、5 个交互实验室、3 个效率工具，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
+          <p>Starry Lab 是一个个人作品：62 篇高频面试题图解、5 个交互实验室、3 个效率工具，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
         </details>
         <details class="faq-item">
           <summary>零基础能看懂吗？</summary>
@@ -630,6 +658,8 @@
 <script src="qa-parts/part4.js"></script>
 <script src="qa-parts/part5.js"></script>
 <script src="qa-parts/part6.js"></script>
+<script src="qa-parts/part7.js"></script>
+<script src="qa-parts/part8.js"></script>
 <script>
   const MODULES = [
     {
@@ -738,6 +768,7 @@
   const all = (window.QA_BUILTIN || []).concat(
     window.QA_PART_1 || [], window.QA_PART_2 || [], window.QA_PART_3 || [],
     window.QA_PART_4 || [], window.QA_PART_5 || [], window.QA_PART_6 || [],
+    window.QA_PART_7 || [], window.QA_PART_8 || [],
   );
   const order = window.QA_ORDER || [];
   const byId = {};
@@ -858,6 +889,41 @@
     try { localStorage.setItem('qa-review', reviewBox.checked ? '1' : '0'); } catch (e) {}
   });
   try { if (localStorage.getItem('qa-review') === '1') { reviewBox.checked = true; applyReview(true); } } catch (e) {}
+
+  /* 科幻 HUD 层：滚动进度 / 终端打字行 / 数据统计 */
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+    progressBar.style.width = (p * 100).toFixed(2) + '%';
+  }, { passive: true });
+
+  const labN = MODULES.filter(m => m.group === 'lab').length;
+  const toolN = MODULES.filter(m => m.group === 'tool').length;
+  const catsN = new Set(deck.map(e => e.cat)).size;
+  document.getElementById('qa-hud').innerHTML =
+    `<div><b>${deck.length}</b><span>Questions</span></div>` +
+    `<div><b>${labN}</b><span>Labs</span></div>` +
+    `<div><b>${toolN}</b><span>Tools</span></div>` +
+    `<div><b>${catsN}</b><span>Categories</span></div>`;
+
+  const termEl = document.getElementById('term-line');
+  const termText = '$ starry load --deck ' + deck.length + ' --labs ' + labN + ' --tools ' + toolN + ' --tests 700+';
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) {
+    termEl.textContent = termText + '  [OK]';
+  } else {
+    let ti = 0;
+    (function type() {
+      if (ti <= termText.length) {
+        termEl.innerHTML = termText.slice(0, ti) + '<span class="cursor"></span>';
+        ti += 2;
+        setTimeout(type, 24);
+      } else {
+        termEl.innerHTML = termText + '  <span class="ok">[OK]</span><span class="cursor"></span>';
+      }
+    })();
+  }
 
   /* 左侧快捷导航：桌面 sticky 侧栏 / 窄屏浮层 + scrollspy */
   const railNavs = [document.getElementById('rail-nav'), document.getElementById('rail-nav-m')];

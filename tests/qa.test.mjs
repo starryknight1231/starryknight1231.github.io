@@ -14,6 +14,7 @@ const deck = (w.QA_DECK = (() => {
   const all = (w.QA_BUILTIN || []).concat(
     w.QA_PART_1 || [], w.QA_PART_2 || [], w.QA_PART_3 || [],
     w.QA_PART_4 || [], w.QA_PART_5 || [], w.QA_PART_6 || [],
+    w.QA_PART_7 || [], w.QA_PART_8 || [],
   );
   const order = w.QA_ORDER || [];
   const byId = {};
@@ -27,12 +28,12 @@ const CATS = ['网络', '数据库', 'Redis', '分布式', 'Java 并发', 'Java 
 export default {
   name: 'QA Deck · 题库数据完整性',
   test(t) {
-    t.eq('题库共 50 题', deck.length, 50);
+    t.eq('题库共 62 题', deck.length, 62);
     t.eq('id 全部唯一', new Set(deck.map(e => e.id)).size, deck.length);
     t.eq('分类覆盖 8 大类', new Set(deck.map(e => e.cat)).size, 8);
-    t.eq('QA_ORDER 覆盖全部 50 题且无多余', (w.QA_ORDER || []).length === 50 && (w.QA_ORDER || []).every(id => deck.some(e => e.id === id)) && deck.every(e => (w.QA_ORDER || []).includes(e.id)), true);
+    t.eq('QA_ORDER 覆盖全部 62 题且无多余', (w.QA_ORDER || []).length === 62 && (w.QA_ORDER || []).every(id => deck.some(e => e.id === id)) && deck.every(e => (w.QA_ORDER || []).includes(e.id)), true);
     t.eq('学习顺序从基础开始（第一题=进程与线程）', deck[0].id, 'process-thread');
-    t.eq('学习顺序以综合设计收尾（最后一题=秒杀）', deck[49].id, 'seckill');
+    t.eq('学习顺序以综合设计收尾（最后一题=秒杀）', deck[deck.length - 1].id, 'seckill');
 
     // 题间互链：相关题的 id 必须真实存在，且互链表覆盖主要知识连线
     const relMap = w.QA_RELATED || {};
