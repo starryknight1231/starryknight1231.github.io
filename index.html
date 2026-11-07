@@ -260,7 +260,24 @@
   }
 
   /* 题库图解 */
-  .qa-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 30px; }
+  .qa-tools { margin-top: 18px; display: flex; }
+  .review-toggle { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; font-size: 12.5px; color: var(--muted); cursor: pointer; user-select: none; }
+  .review-toggle input { accent-color: var(--accent); }
+  .review-toggle:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+  .qa-body { display: grid; grid-template-columns: 186px minmax(0, 1fr); gap: 30px; align-items: start; margin-top: 26px; }
+  .qa-rail { position: sticky; top: 84px; max-height: calc(100vh - 108px); overflow-y: auto; scrollbar-width: thin; font-size: 12px; }
+  .rail-head { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); padding-bottom: 8px; border-bottom: 1px solid var(--line-strong); }
+  .rail-cat { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 7px 6px; border-radius: 7px; cursor: pointer; color: var(--muted); }
+  .rail-cat:hover { color: var(--ink); background: var(--surface); }
+  .rail-cat.on { color: var(--accent); background: var(--surface); font-weight: 600; }
+  .rail-cat .n { font-family: var(--mono); font-size: 9.5px; color: var(--faint); }
+  .rail-qs { padding: 2px 0 6px; }
+  .rail-qs[hidden] { display: none; }
+  .rail-q { display: block; padding: 4px 8px 4px 12px; border-left: 2px solid var(--line); color: var(--muted); line-height: 1.5; }
+  .rail-q:hover { color: var(--ink); border-left-color: var(--line-strong); }
+  .rail-q.on { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+  .qa-fab, .qa-overlay { display: none; }
+  .qa-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
   .qa-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; transition: border-color .18s, box-shadow .18s; }
   .qa-card.is-open { border-color: var(--line-strong); box-shadow: 0 18px 44px rgba(31,28,25,.08); }
   .qa-head { padding: 20px 24px; cursor: pointer; user-select: none; }
@@ -295,6 +312,32 @@
   .qa-lab { display: inline-flex; align-items: center; gap: 7px; margin-top: 8px; color: var(--accent); font-size: 13.5px; border-bottom: 1px solid transparent; }
   .qa-lab:hover { border-color: var(--accent); }
   .qa-points { margin: 18px 0 0; padding: 14px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; font-family: var(--mono); font-size: 11.5px; line-height: 1.9; color: var(--muted); white-space: pre-wrap; }
+
+  /* 快速复习模式 */
+  .qa-grid.review .qa-detail { display: none !important; }
+  .qa-grid.review .qa-toggle { display: none; }
+  .qa-grid.review .qa-head { padding: 14px 20px; cursor: default; }
+  .qa-grid.review .qa-q { font-size: 16px; margin-top: 8px; }
+  .qa-grid.review .qa-answer { display: block; overflow: visible; font-size: 12.5px; margin-top: 6px; }
+  .qa-grid.review .qa-card.is-open { box-shadow: none; }
+
+  /* 相关题互链 */
+  .qa-rel { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); }
+  .qa-rel h4 { margin: 0 0 8px; font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .qa-rel-a { display: inline-block; margin: 0 8px 6px 0; padding: 4px 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 99px; font-size: 12px; color: var(--muted); }
+  .qa-rel-a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* 窄屏：目录浮层 */
+  @media (max-width: 1180px) {
+    .qa-body { grid-template-columns: 1fr; }
+    .qa-rail { display: none; }
+    .qa-fab { display: flex; position: fixed; right: 18px; bottom: 22px; z-index: 120; width: 52px; height: 52px; align-items: center; justify-content: center; border-radius: 50%; background: var(--ink); color: var(--bg); font-size: 12px; line-height: 1.3; border: 0; cursor: pointer; box-shadow: 0 10px 26px rgba(31,28,25,.24); text-align: center; }
+    .qa-overlay { display: flex; position: fixed; inset: 0; z-index: 130; background: rgba(31,28,25,.45); align-items: flex-end; }
+    .qa-overlay[hidden] { display: none; }
+    .qa-sheet { width: 100%; max-height: 76vh; overflow-y: auto; background: var(--bg); border-radius: 18px 18px 0 0; padding: 16px 18px 26px; }
+    .sheet-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); padding-bottom: 10px; border-bottom: 1px solid var(--line-strong); margin-bottom: 8px; }
+    .sheet-close { border: 0; background: none; font-size: 22px; line-height: 1; color: var(--muted); cursor: pointer; }
+  }
 
   @media (max-width: 1020px) {
     .hero-grid { grid-template-columns: 1fr; gap: 34px; }
@@ -428,7 +471,19 @@
         <button class="tab" role="tab" data-cat="操作系统" aria-selected="false" tabindex="-1">操作系统</button>
       </div>
 
-      <div class="qa-grid" id="qa-deck"></div>
+      <div class="qa-tools">
+        <label class="review-toggle" for="review-mode" title="收起图解，只滚题面与 30 秒答案，快速过卡">
+          <input type="checkbox" id="review-mode"> 快速复习模式
+        </label>
+      </div>
+
+      <div class="qa-body">
+        <aside class="qa-rail" aria-label="题库快捷导航">
+          <div class="rail-head">目录 · 由浅入深</div>
+          <nav id="rail-nav" class="rail-nav"></nav>
+        </aside>
+        <div class="qa-grid" id="qa-deck"></div>
+      </div>
 
       <div class="coming">
         <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 50 道高频经典，由浅入深排序</span>
@@ -590,6 +645,14 @@
     </div>
   </section>
 </main>
+
+<button class="qa-fab" id="qa-fab" aria-label="打开题库目录">目<br>录</button>
+<div class="qa-overlay" id="qa-overlay" hidden>
+  <div class="qa-sheet">
+    <div class="sheet-head"><span>题库目录 · 由浅入深</span><button class="sheet-close" id="qa-sheet-close" aria-label="关闭">×</button></div>
+    <nav id="rail-nav-m" class="rail-nav"></nav>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="container">
@@ -827,11 +890,104 @@
   });
 
   /* 深链：#qa-tcp 直接展开对应题解 */
+  function openCard(target) {
+    target.classList.add('is-open');
+    const e = deck.find(x => 'qa-' + x.id === target.id);
+    const st = e && qaState.get(e.id);
+    if (st && !st.drawn) { st.drawn = true; qaRender(target, e); }
+  }
   if (location.hash.startsWith('#qa-')) {
     const target = document.getElementById(location.hash.slice(1));
-    const e = target && deck.find(x => 'qa-' + x.id === target.id);
-    if (target && e) { target.classList.add('is-open'); qaRender(target, e); }
+    if (target) { openCard(target); setTimeout(() => target.scrollIntoView({ block: 'start' }), 60); }
   }
+
+  /* 相关题：渲染互链 + 点击跳转展开 */
+  const relMap = window.QA_RELATED || {};
+  qaGrid.querySelectorAll('.qa-card').forEach(card => {
+    const e = deck.find(x => 'qa-' + x.id === card.id);
+    const rel = relMap[e.id] || [];
+    if (!rel.length) return;
+    const links = rel.map(rid => {
+      const r = deck.find(x => x.id === rid);
+      return r ? `<a class="qa-rel-a" href="#qa-${rid}">${r.q.length > 15 ? r.q.slice(0, 15) + '…' : r.q}</a>` : '';
+    }).join('');
+    card.querySelector('.qa-points').insertAdjacentHTML('afterend',
+      `<div class="qa-rel"><h4>相关题 · 串成知识网</h4>${links}</div>`);
+  });
+  qaGrid.addEventListener('click', ev => {
+    const a = ev.target.closest('.qa-rel-a');
+    if (!a) return;
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if (!target) return;
+    ev.preventDefault();
+    openCard(target);
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* 快速复习模式：只滚题面与 30 秒答案 */
+  const reviewBox = document.getElementById('review-mode');
+  const applyReview = on => qaGrid.classList.toggle('review', on);
+  reviewBox.addEventListener('change', () => {
+    applyReview(reviewBox.checked);
+    try { localStorage.setItem('qa-review', reviewBox.checked ? '1' : '0'); } catch (e) {}
+  });
+  try { if (localStorage.getItem('qa-review') === '1') { reviewBox.checked = true; applyReview(true); } } catch (e) {}
+
+  /* 左侧快捷导航：桌面 sticky 侧栏 / 窄屏浮层 + scrollspy */
+  const railNavs = [document.getElementById('rail-nav'), document.getElementById('rail-nav-m')];
+  const railHtml = (() => {
+    const cats = [];
+    deck.forEach(e => { if (!cats.includes(e.cat)) cats.push(e.cat); });
+    return cats.map(cat => {
+      const qs = deck.filter(e => e.cat === cat);
+      return `<div class="rail-cat" data-cat="${cat}"><span>${cat}</span><span class="n">${qs.length}</span></div>` +
+        `<div class="rail-qs" hidden>${qs.map(e => {
+          const no = String(deck.indexOf(e) + 1).padStart(2, '0');
+          const t = e.q.length > 14 ? e.q.slice(0, 14) + '…' : e.q;
+          return `<a class="rail-q" data-id="${e.id}" href="#qa-${e.id}">${no} ${t}</a>`;
+        }).join('')}</div>`;
+    }).join('');
+  })();
+  railNavs.forEach(n => { if (n) n.innerHTML = railHtml; });
+  function railJump(link) {
+    const target = document.getElementById(link.getAttribute('href').slice(1));
+    if (!target) return;
+    openCard(target);
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const ov = document.getElementById('qa-overlay');
+    if (ov && !ov.hidden) ov.hidden = true;
+  }
+  railNavs.forEach(nav => {
+    if (!nav) return;
+    nav.addEventListener('click', ev => {
+      const cat = ev.target.closest('.rail-cat');
+      if (cat) { const qs = cat.nextElementSibling; if (qs) qs.hidden = !qs.hidden; return; }
+      const q = ev.target.closest('.rail-q');
+      if (q) { ev.preventDefault(); railJump(q); }
+    });
+  });
+  const qaFab = document.getElementById('qa-fab');
+  const qaOverlay = document.getElementById('qa-overlay');
+  if (qaFab) qaFab.addEventListener('click', () => { qaOverlay.hidden = false; });
+  const sheetClose = document.getElementById('qa-sheet-close');
+  if (sheetClose) sheetClose.addEventListener('click', () => { qaOverlay.hidden = true; });
+  if (qaOverlay) qaOverlay.addEventListener('click', ev => { if (ev.target === qaOverlay) qaOverlay.hidden = true; });
+
+  const catOf = {};
+  deck.forEach(e => { catOf[e.id] = e.cat; });
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const id = en.target.id.replace('qa-', '');
+      const cat = catOf[id];
+      railNavs.forEach(nav => {
+        if (!nav) return;
+        nav.querySelectorAll('.rail-cat').forEach(c => c.classList.toggle('on', c.dataset.cat === cat));
+        nav.querySelectorAll('.rail-q').forEach(q => q.classList.toggle('on', q.dataset.id === id));
+      });
+    });
+  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+  document.querySelectorAll('.qa-card').forEach(c => spy.observe(c));
 
   document.querySelectorAll('.faq-item').forEach(item => {
     item.addEventListener('toggle', () => {

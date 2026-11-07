@@ -34,6 +34,15 @@ export default {
     t.eq('学习顺序从基础开始（第一题=进程与线程）', deck[0].id, 'process-thread');
     t.eq('学习顺序以综合设计收尾（最后一题=秒杀）', deck[49].id, 'seckill');
 
+    // 题间互链：相关题的 id 必须真实存在，且互链表覆盖主要知识连线
+    const relMap = w.QA_RELATED || {};
+    const ids = new Set(deck.map(e => e.id));
+    const relIds = Object.values(relMap).flat();
+    t.ok('互链目标全部真实存在', relIds.every(id => ids.has(id)),
+      relIds.filter(id => !ids.has(id)).join(',') || 'ok');
+    t.ok('互链覆盖 ≥ 45 题', Object.keys(relMap).length >= 45, Object.keys(relMap).length + ' 题');
+    t.ok('有实验室深链的题也进互链（tcp/raft）', (relMap['tcp'] || []).includes('tcp-2msl') && Array.isArray(relMap['raft-election']));
+
     for (const e of deck) {
       const tag = `[${e.id}]`;
       t.ok(`${tag} 分类合法（${e.cat}）`, CATS.includes(e.cat));
