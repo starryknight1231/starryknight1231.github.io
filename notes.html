@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Starry Lab 学习日志——项目里程碑与学习笔记的时间线，每个节点都可以点进对应的 commit 验证。">
+<meta name="author" content="starryknight1231">
+<title>学习日志 · Starry Lab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238d3620'/%3E%3Cpath d='M9 11l5 5-5 5M16 21h7' stroke='%23f2efe8' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #f2efe8; --surface: #faf8f3; --surface-2: #f6f2ea;
+    --line: #dcd5c7; --line-strong: #bdb3a1;
+    --ink: #1f1c19; --muted: #5f5850; --faint: #6f675d;
+    --accent: #a8442c; --accent-deep: #8d3620; --teal: #2f6b60; --moss: #4f7038;
+    --mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px 24px; border-bottom: 1px solid var(--line-strong); background: var(--bg);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; }
+  .brand svg { width: 24px; height: 24px; display: block; }
+  .brand i { font-style: normal; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .topbar nav { display: flex; gap: 20px; font-size: 13px; }
+  .topbar nav a { color: var(--muted); }
+  .topbar nav a:hover { color: var(--accent); }
+  .topbar nav a:first-child { color: var(--accent); }
+  main { max-width: 880px; margin: 0 auto; padding: 40px 24px 64px; }
+  .eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  h1 { margin: 10px 0 0; font-size: clamp(28px, 4vw, 40px); letter-spacing: -.02em; line-height: 1.2; }
+  .lede { margin: 14px 0 0; max-width: 640px; color: var(--muted); font-size: 14.5px; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .chips { display: flex; gap: 8px; margin-top: 22px; flex-wrap: wrap; }
+  .chip {
+    padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 99px;
+    background: var(--surface); font-size: 12.5px; color: var(--muted); cursor: pointer; user-select: none;
+    font-family: inherit; transition: color .15s, border-color .15s;
+  }
+  .chip:hover { color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tl { margin-top: 34px; position: relative; padding-left: 26px; }
+  .tl::before { content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+  .entry { position: relative; padding: 0 0 30px 14px; }
+  .entry::before {
+    content: ""; position: absolute; left: -25px; top: 10px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--line-strong);
+  }
+  .e-date { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; color: var(--faint); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .e-tag { padding: 2px 10px; border-radius: 99px; font-size: 10.5px; font-weight: 600; }
+  .e-tag.里程碑 { background: var(--accent); color: #f2efe8; }
+  .e-tag.学习笔记 { background: var(--teal); color: #f2efe8; }
+  .e-tag.面试复盘 { background: var(--mauve, #6f5a68); color: #f2efe8; }
+  .e-title { margin: 8px 0 0; font-size: 17.5px; font-weight: 700; letter-spacing: -.01em; }
+  .e-body { margin: 8px 0 0; color: var(--muted); font-size: 13.5px; max-width: 680px; }
+  .e-links { margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-size: 10.5px; }
+  .e-links a { color: var(--teal); border-bottom: 1px solid transparent; }
+  .e-links a:hover { border-color: var(--teal); }
+  .empty { padding: 40px 0; color: var(--faint); font-size: 13px; }
+  footer { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; color: var(--faint); font-family: var(--mono); font-size: 10.5px; }
+  footer .sep { margin: 0 8px; }
+  @media (max-width: 560px) {
+    main { padding: 28px 18px 48px; }
+    .tl { padding-left: 20px; }
+    .e-title { font-size: 15.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#8d3620"/><path d="M9 11l5 5-5 5M16 21h7" stroke="#f2efe8" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Starry Lab <i>学习日志</i></span>
+  </div>
+  <nav>
+    <a href="/">← 返回门户</a>
+    <a href="https://github.com/starryknight1231/starryknight1231.github.io" target="_blank" rel="noopener">源码 ↗</a>
+  </nav>
+</header>
+
+<main>
+  <span class="eyebrow">Study Log / Timeline</span>
+  <h1>学习日志</h1>
+  <p class="lede">项目里程碑与学习笔记的时间线。<b>每个节点都有据可查</b>：里程碑直接链到对应的 commit——日期不是写出来的，是提交出来的。</p>
+  <div class="chips" role="group" aria-label="按类型筛选">
+    <button class="chip" data-tag="全部" aria-pressed="true">全部</button>
+    <button class="chip" data-tag="里程碑" aria-pressed="false">里程碑</button>
+    <button class="chip" data-tag="学习笔记" aria-pressed="false">学习笔记</button>
+    <button class="chip" data-tag="面试复盘" aria-pressed="false">面试复盘</button>
+  </div>
+  <div class="tl" id="tl"></div>
+</main>
+
+<footer>
+  © 2026 starryknight1231 · Starry Lab <span class="sep">|</span> 个人作品 · 独立设计与实现 <span class="sep">|</span> 本页数据：<a href="https://github.com/starryknight1231/starryknight1231.github.io/blob/master/notes-data.js" target="_blank" rel="noopener">notes-data.js</a>
+</footer>
+
+<script src="notes-data.js"></script>
+<script>
+  (function () {
+    'use strict';
+    const log = (window.STUDY_LOG || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+    const tl = document.getElementById('tl');
+    const TAG_COLORS = { '里程碑': 'var(--accent)', '学习笔记': 'var(--teal)', '面试复盘': '#6f5a68' };
+
+    function render(tag) {
+      const hits = log.filter(e => tag === '全部' || e.tag === tag);
+      tl.innerHTML = hits.length ? hits.map(e => {
+        const sha = e.sha ? `<a href="https://github.com/starryknight1231/starryknight1231.github.io/commit/${e.sha}" target="_blank" rel="noopener">commit ${e.sha}</a>` : '';
+        const link = e.link ? `<a href="${e.link.href}">${e.link.label}</a>` : '';
+        return `<article class="entry">
+          <div class="e-date">${e.date}<span class="e-tag ${e.tag}">${e.tag}</span></div>
+          <h2 class="e-title">${e.title}</h2>
+          <p class="e-body">${e.body}</p>
+          ${(sha || link) ? `<div class="e-links">${sha}${link}</div>` : ''}
+        </article>`;
+      }).join('') : '<div class="empty">这个分类还没有条目</div>';
+    }
+
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(c2 => c2.setAttribute('aria-pressed', String(c2 === chip)));
+        render(chip.dataset.tag);
+      });
+    });
+    render('全部');
+  })();
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ const parts = readdirSync(partDir).filter(f => f.endsWith('.js')).sort();
 for (const f of parts) {
   new Function('window', readFileSync(new URL(f, partDir), 'utf8'))(w);
 }
+new Function('window', readFileSync(new URL('../notes-data.js', import.meta.url), 'utf8'))(w);
 const deck = (w.QA_DECK = (() => {
   const all = (w.QA_BUILTIN || []).concat(
     w.QA_PART_1 || [], w.QA_PART_2 || [], w.QA_PART_3 || [],
@@ -21,6 +22,10 @@ const deck = (w.QA_DECK = (() => {
   all.forEach(e => { byId[e.id] = e; });
   return order.length ? order.map(id => byId[id]).filter(Boolean) : all;
 })());
+
+/* 学习日志（notes.html 的数据层）：时间线的日期必须真实规范、倒序排列、sha 可指向真实提交 */
+const log = (w.STUDY_LOG || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+const LOG_TAGS = ['里程碑', '学习笔记', '面试复盘'];
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 
 const CATS = ['网络', '数据库', 'Redis', '分布式', 'Java 并发', 'Java 基础', '框架', '操作系统'];
@@ -43,6 +48,14 @@ export default {
       relIds.filter(id => !ids.has(id)).join(',') || 'ok');
     t.ok('互链覆盖 ≥ 45 题', Object.keys(relMap).length >= 45, Object.keys(relMap).length + ' 题');
     t.ok('有实验室深链的题也进互链（tcp/raft）', (relMap['tcp'] || []).includes('tcp-2msl') && Array.isArray(relMap['raft-election']));
+
+    t.head('学习日志 · 时间线数据');
+    t.ok('日志至少 8 条（当前 ' + log.length + ' 条）', log.length >= 8);
+    t.ok('日期格式全部为 YYYY-MM-DD', log.every(e => /^\d{4}-\d{2}-\d{2}$/.test(e.date)));
+    t.ok('按日期倒序（时间线最新在前）', log.every((e, i) => i === 0 || log[i - 1].date >= e.date));
+    t.ok('tag 全部合法', log.every(e => LOG_TAGS.includes(e.tag)));
+    t.ok('标题与正文齐全', log.every(e => e.title && e.title.length >= 8 && e.body && e.body.length >= 30));
+    t.ok('sha 格式合法（可指向真实 commit）', log.filter(e => e.sha).every(e => /^[0-9a-f]{7,40}$/.test(e.sha)));
 
     for (const e of deck) {
       const tag = `[${e.id}]`;
