@@ -97,13 +97,13 @@
     const nameAt = (i, color) => `<text x="${30 + i * 118 + 52}" y="145" text-anchor="middle" font-size="12.5" font-weight="600" fill="${color || C.ink}" font-family="${SANS}">${st[i]}</text>`;
     const base = () => st.map((_, i) => i < 5 ? arrow(30 + i * 118 + 106, 140, 30 + (i + 1) * 118 + 2, 140, {}) : '').join('');
     const L = [
-      () => base() + boxAt(0) + nameAt(0, C.blue) + txt(82, 196, '先查本地缓存：浏览器 → hosts → 系统缓存', { anchor: 'middle', fs: 11.5 }),
-      () => boxAt(1) + nameAt(1, C.teal) + txt(200, 196, '域名 → IP：缓存未命中则递归查询 根 → 顶级 → 权威', { anchor: 'middle', fs: 11.5 }),
-      () => boxAt(2) + nameAt(2, C.moss) + txt(318, 196, '与服务器三次握手建立连接（上一题）', { anchor: 'middle', fs: 11.5 }),
-      () => boxAt(3) + nameAt(3, C.brass) + txt(436, 196, 'HTTPS 才有：交换证书与密钥，TLS 1.3 一次 RTT', { anchor: 'middle', fs: 11.5 }),
-      () => boxAt(4) + nameAt(4, C.accent) + txt(554, 196, '发送 GET，服务器返回 HTML（可能 301 / 304）', { anchor: 'middle', fs: 11.5 }),
-      () => boxAt(5) + nameAt(5, C.mauve) + txt(672, 196, 'HTML→DOM，CSS→CSSOM，布局绘制；JS 默认阻塞', { anchor: 'middle', fs: 11.5 }) +
-        txt(380, 236, '每一步都有缓存在工作；子资源（CSS/JS/图片）重复走 3-5 步，HTTP/2 下多路复用', { anchor: 'middle', color: C.faint, fs: 11.5 }),
+      () => base() + boxAt(0) + nameAt(0, C.blue) + txt(82, 196, '先查缓存', { anchor: 'middle', fs: 11.5 }),
+      () => boxAt(1) + nameAt(1, C.teal) + txt(200, 196, 'DNS 查 IP', { anchor: 'middle', fs: 11.5 }),
+      () => boxAt(2) + nameAt(2, C.moss) + txt(318, 196, 'TCP 握手', { anchor: 'middle', fs: 11.5 }),
+      () => boxAt(3) + nameAt(3, C.brass) + txt(436, 196, 'TLS 握手', { anchor: 'middle', fs: 11.5 }),
+      () => boxAt(4) + nameAt(4, C.accent) + txt(554, 196, 'HTTP 请求', { anchor: 'middle', fs: 11.5 }),
+      () => boxAt(5) + nameAt(5, C.mauve) + txt(672, 196, '渲染显示', { anchor: 'middle', fs: 11.5 }) +
+        txt(380, 240, '每一步都有缓存在工作；子资源重复走 3-5 步，HTTP/2 下多路复用', { anchor: 'middle', color: C.faint, fs: 11.5 }),
     ];
     return {
       id: 'url', cat: '网络', level: '入门', hot: true,
@@ -206,7 +206,7 @@
       () => txt(380, 500, '一句话区分：穿透 = 不存在｜击穿 = 一瞬间｜雪崩 = 一整片', { anchor: 'middle', color: C.accent, fs: 12.5, fw: 600 }),
     ];
     return {
-      id: 'cache', cat: '数据库', level: '进阶', hot: true,
+      id: 'cache', cat: 'Redis', level: '进阶', hot: true,
       q: '缓存穿透、击穿、雪崩有什么区别？分别怎么防？',
       answer: '三兄弟都是「请求绕过缓存打到数据库」，区别在时机和范围：穿透——查根本不存在的数据，缓存永远拦不住，防法是布隆过滤器 + 空值缓存；击穿——单个热点 key 过期的瞬间高并发回源，防互斥重建 / 逻辑过期；雪崩——大批 key 同时过期或缓存宕机，防 TTL 加随机、多级缓存、集群高可用。',
       steps: [
@@ -503,5 +503,8 @@
     };
   }
 
-  w.QA_DECK = [qTcp(), qUrl(), qIso(), qCache(), qHash(), qSnow(), qVol(), qPool()];
+  /* 内置 8 题；qa-parts/*.js 各自提供 QA_PART_N，由门户或测试拼成完整题库。
+     同时暴露画图助手，分部文件必须复用同一套，保证全站视觉一致。 */
+  w.QA_BUILTIN = [qTcp(), qUrl(), qIso(), qCache(), qHash(), qSnow(), qVol(), qPool()];
+  w.__qaHelpers = { C, SANS, MONO, box, txt, arrow, chip, layers };
 })(typeof window !== 'undefined' ? window : globalThis);

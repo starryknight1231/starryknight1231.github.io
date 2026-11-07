@@ -1,21 +1,29 @@
 /* QA Deck 数据完整性测试：门户题库的每道题必须有齐全字段、
    步数与图层数对齐（分步显影才成立）、深链的实验室页面真实存在。 */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const src = readFileSync(new URL('../qa-deck.js', import.meta.url), 'utf8');
 const w = {};
-new Function('window', src)(w);
-const deck = w.QA_DECK || [];
+new Function('window', readFileSync(new URL('../qa-deck.js', import.meta.url), 'utf8'))(w);
+const partDir = new URL('../qa-parts/', import.meta.url);
+const parts = readdirSync(partDir).filter(f => f.endsWith('.js')).sort();
+for (const f of parts) {
+  new Function('window', readFileSync(new URL(f, partDir), 'utf8'))(w);
+}
+const deck = (w.QA_DECK = (w.QA_BUILTIN || []).concat(
+  w.QA_PART_1 || [], w.QA_PART_2 || [], w.QA_PART_3 || [],
+  w.QA_PART_4 || [], w.QA_PART_5 || [], w.QA_PART_6 || [],
+));
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 
-const CATS = ['网络', '数据库', '分布式', 'Java 并发'];
+const CATS = ['网络', '数据库', 'Redis', '分布式', 'Java 并发', 'Java 基础', '框架', '操作系统'];
 
 export default {
   name: 'QA Deck · 题库数据完整性',
   test(t) {
-    t.eq('题库首批共 8 题', deck.length, 8);
+    t.eq('题库共 50 题', deck.length, 50);
     t.eq('id 全部唯一', new Set(deck.map(e => e.id)).size, deck.length);
+    t.eq('分类覆盖 8 大类', new Set(deck.map(e => e.cat)).size, 8);
 
     for (const e of deck) {
       const tag = `[${e.id}]`;
@@ -36,12 +44,10 @@ export default {
       t.ok(`${tag} 首步其余层降为 0.15`, e.figure.draw(0).includes('opacity="0.15"'));
       t.ok(`${tag} SVG 合法（含 <svg 与 viewBox）`, last.includes('<svg') && last.includes('viewBox'));
 
-      // 动手实验深链的页面必须真实存在
+      // 动手实验深链的页面必须真实存在（没有合适实验室的题可省略）
       if (e.lab && e.lab.href) {
         const file = e.lab.href.split('#')[0].replace(/\/$/, '') + '/index.html';
         t.ok(`${tag} 实验室深链存在（${e.lab.href}）`, existsSync(ROOT + file));
-      } else {
-        t.ok(`${tag} 有动手实验入口`, false);
       }
     }
   },

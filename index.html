@@ -420,15 +420,19 @@
         <button class="tab" role="tab" data-cat="全部" aria-selected="true">全部</button>
         <button class="tab" role="tab" data-cat="网络" aria-selected="false" tabindex="-1">网络</button>
         <button class="tab" role="tab" data-cat="数据库" aria-selected="false" tabindex="-1">数据库</button>
+        <button class="tab" role="tab" data-cat="Redis" aria-selected="false" tabindex="-1">Redis</button>
         <button class="tab" role="tab" data-cat="分布式" aria-selected="false" tabindex="-1">分布式</button>
         <button class="tab" role="tab" data-cat="Java 并发" aria-selected="false" tabindex="-1">Java 并发</button>
+        <button class="tab" role="tab" data-cat="Java 基础" aria-selected="false" tabindex="-1">Java 基础</button>
+        <button class="tab" role="tab" data-cat="框架" aria-selected="false" tabindex="-1">框架</button>
+        <button class="tab" role="tab" data-cat="操作系统" aria-selected="false" tabindex="-1">操作系统</button>
       </div>
 
       <div class="qa-grid" id="qa-deck"></div>
 
       <div class="coming">
-        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 难度从低到高</span>
-        <span class="badge">题库持续增加</span>
+        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 50 道高频经典，分类浏览</span>
+        <span class="badge">持续增加</span>
       </div>
     </div>
   </section>
@@ -556,7 +560,7 @@
       <div class="faq-list">
         <details class="faq-item" open>
           <summary>这是什么？谁做的？</summary>
-          <p>Starry Lab 是一个个人作品：8 篇面试题图解、8 个交互实验室，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
+          <p>Starry Lab 是一个个人作品：50 篇高频面试题图解、8 个交互实验室，选题、模拟内核、交互与文案由一人独立完成，没有参考模板，也没有第三方库。源码与测试公开在 GitHub——它同时是一份可以直接验证的简历：每个数字都能重算，每条结论都能复跑。</p>
         </details>
         <details class="faq-item">
           <summary>零基础能看懂吗？</summary>
@@ -631,6 +635,12 @@
 </footer>
 
 <script src="qa-deck.js"></script>
+<script src="qa-parts/part1.js"></script>
+<script src="qa-parts/part2.js"></script>
+<script src="qa-parts/part3.js"></script>
+<script src="qa-parts/part4.js"></script>
+<script src="qa-parts/part5.js"></script>
+<script src="qa-parts/part6.js"></script>
 <script>
   const MODULES = [
     {
@@ -732,8 +742,14 @@
   render(0);
 
   /* ---------- 题库图解 ---------- */
-  const CAT_COLORS = { '网络': '#4e6478', '数据库': '#8d4a5e', '分布式': '#4f7038', 'Java 并发': '#8a6a1f' };
-  const deck = window.QA_DECK || [];
+  const CAT_COLORS = {
+    '网络': '#4e6478', '数据库': '#8d4a5e', 'Redis': '#2f6b60', '分布式': '#4f7038',
+    'Java 并发': '#8a6a1f', 'Java 基础': '#6f5a68', '框架': '#a8452f', '操作系统': '#6f675d',
+  };
+  const deck = (window.QA_DECK = (window.QA_BUILTIN || []).concat(
+    window.QA_PART_1 || [], window.QA_PART_2 || [], window.QA_PART_3 || [],
+    window.QA_PART_4 || [], window.QA_PART_5 || [], window.QA_PART_6 || [],
+  ));
   const qaGrid = document.getElementById('qa-deck');
   const qaState = new Map();
 
@@ -758,7 +774,7 @@
         <h4 class="qa-step-title"></h4>
         <p class="qa-step-text"></p>
         <div class="qa-fu"><h4>追问链 · 面试官还会这么问</h4><ul>${e.followups.map(f => `<li><b>${f[0]}</b>　${f[1]}</li>`).join('')}</ul></div>
-        <a class="qa-lab" href="${e.lab.href}">动手实验 · ${e.lab.label} →</a>
+        ${e.lab ? `<a class="qa-lab" href="${e.lab.href}">动手实验 · ${e.lab.label} →</a>` : ''}
         <pre class="qa-points">${e.points}</pre>
       </div>
     </article>`).join('');
