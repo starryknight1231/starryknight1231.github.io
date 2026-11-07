@@ -299,7 +299,7 @@
   .qa-detail { position: relative; overflow: hidden; }
   .qa-card.is-open .qa-detail::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); animation: qa-scan .8s ease-out 1; pointer-events: none; }
   @keyframes qa-scan { from { top: 0; opacity: 1; } to { top: calc(100% - 2px); opacity: 0; } }
-  .qa-stage { position: relative; }
+  .qa-stage { position: relative; transition: transform .12s ease-out; will-change: transform; }
   .qa-stage::before, .qa-stage::after { content: ""; position: absolute; width: 15px; height: 15px; pointer-events: none; z-index: 2; }
   .qa-stage::before { top: -1px; left: -1px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
   .qa-stage::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
@@ -307,6 +307,29 @@
     .scroll-progress { transition: none; }
     .qa-card.is-open .qa-detail::before { animation: none; opacity: 0; }
   }
+
+  /* 粒子星空 */
+  #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  main, .site-footer { position: relative; z-index: 1; }
+
+  /* 命令面板 ⌘K */
+  .cmdk-btn { height: 34px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); font-size: 12px; cursor: pointer; font-family: var(--mono); transition: color .15s, border-color .15s; }
+  .cmdk-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .cmdk-overlay { position: fixed; inset: 0; z-index: 150; background: rgba(31,28,25,.5); display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; backdrop-filter: blur(3px); }
+  .cmdk-overlay[hidden] { display: none; }
+  .cmdk-box { width: min(620px, calc(100% - 40px)); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 14px; overflow: hidden; box-shadow: 0 30px 80px rgba(31,28,25,.35); }
+  .cmdk-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .cmdk-logo { font-family: var(--mono); font-size: 10px; color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; padding: 2px 6px; }
+  .cmdk-head input { flex: 1; border: 0; outline: none; background: none; font: inherit; font-size: 15px; color: var(--ink); }
+  .cmdk-list { max-height: 46vh; overflow-y: auto; }
+  .cmdk-item { display: flex; align-items: baseline; gap: 10px; padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--line); }
+  .cmdk-item:last-child { border-bottom: 0; }
+  .cmdk-item.on { background: var(--surface2); box-shadow: inset 2.5px 0 0 var(--accent); }
+  .cmdk-no { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+  .cmdk-q { flex: 1; font-size: 13.5px; color: var(--ink); }
+  .cmdk-cat { font-family: var(--mono); font-size: 9.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .08em; }
+  .cmdk-empty { padding: 24px; text-align: center; color: var(--faint); font-size: 13px; }
+  .cmdk-foot { padding: 9px 16px; font-family: var(--mono); font-size: 10px; color: var(--faint); border-top: 1px solid var(--line); }
 
   /* 窄屏：目录浮层 */
   @media (max-width: 1180px) {
@@ -360,6 +383,7 @@
 </style>
 </head>
 <body>
+<canvas id="starfield" aria-hidden="true"></canvas>
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 <header class="nav">
   <div class="container nav-inner">
@@ -407,6 +431,7 @@
         <label class="review-toggle" for="review-mode" title="收起图解，只滚题面与 30 秒答案，快速过卡">
           <input type="checkbox" id="review-mode"> 快速复习模式
         </label>
+        <button class="cmdk-btn" id="cmdk-btn" type="button">搜题 ⌘K</button>
         <div class="hud" id="qa-hud" aria-hidden="true"></div>
       </div>
 
@@ -600,6 +625,13 @@
 </main>
 
 <button class="qa-fab" id="qa-fab" aria-label="打开题库目录">目<br>录</button>
+<div class="cmdk-overlay" id="cmdk" hidden>
+  <div class="cmdk-box" role="dialog" aria-label="搜索题目">
+    <div class="cmdk-head"><span class="cmdk-logo">⌘K</span><input id="cmdk-input" placeholder="搜索题目：输入关键词，↑↓ 选择，Enter 打开" autocomplete="off" spellcheck="false"></div>
+    <div class="cmdk-list" id="cmdk-list"></div>
+    <div class="cmdk-foot" id="cmdk-foot"></div>
+  </div>
+</div>
 <div class="qa-overlay" id="qa-overlay" hidden>
   <div class="qa-sheet">
     <div class="sheet-head"><span>题库目录 · 由浅入深</span><button class="sheet-close" id="qa-sheet-close" aria-label="关闭">×</button></div>
@@ -898,18 +930,29 @@
     progressBar.style.width = (p * 100).toFixed(2) + '%';
   }, { passive: true });
 
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const labN = MODULES.filter(m => m.group === 'lab').length;
   const toolN = MODULES.filter(m => m.group === 'tool').length;
   const catsN = new Set(deck.map(e => e.cat)).size;
-  document.getElementById('qa-hud').innerHTML =
+  const hudEl = document.getElementById('qa-hud');
+  hudEl.innerHTML =
     `<div><b>${deck.length}</b><span>Questions</span></div>` +
     `<div><b>${labN}</b><span>Labs</span></div>` +
     `<div><b>${toolN}</b><span>Tools</span></div>` +
     `<div><b>${catsN}</b><span>Categories</span></div>`;
+  if (!reducedMotion) {
+    const nums = hudEl.querySelectorAll('b');
+    const targets = [...nums].map(b => +b.textContent);
+    const t0 = performance.now(), dur = 950;
+    (function tick(now) {
+      const k = Math.min(1, (now - t0) / dur), ease = 1 - Math.pow(1 - k, 3);
+      nums.forEach((b, i) => { b.textContent = Math.round(targets[i] * ease); });
+      if (k < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
 
   const termEl = document.getElementById('term-line');
   const termText = '$ starry load --deck ' + deck.length + ' --labs ' + labN + ' --tools ' + toolN + ' --tests 700+';
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reducedMotion) {
     termEl.textContent = termText + '  [OK]';
   } else {
@@ -980,6 +1023,120 @@
     });
   }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
   document.querySelectorAll('.qa-card').forEach(c => spy.observe(c));
+
+  /* 粒子星空：手写 canvas，零依赖；标签页隐藏自动暂停 */
+  (function starfield() {
+    const cvs = document.getElementById('starfield');
+    if (!cvs || reducedMotion) return;
+    const ctx = cvs.getContext('2d');
+    let W, H, dots = [], raf = 0, running = true;
+    function resize() {
+      W = cvs.width = innerWidth; H = cvs.height = innerHeight;
+      dots = Array.from({ length: Math.min(70, Math.floor(W / 18)) }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25,
+        r: Math.random() * 1.5 + .6,
+      }));
+    }
+    function step() {
+      if (!running) return;
+      ctx.clearRect(0, 0, W, H);
+      for (let i = 0; i < dots.length; i++) {
+        const a = dots[i];
+        a.x += a.vx; a.y += a.vy;
+        if (a.x < 0 || a.x > W) a.vx *= -1;
+        if (a.y < 0 || a.y > H) a.vy *= -1;
+        for (let j = i + 1; j < dots.length; j++) {
+          const b = dots[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+          if (d2 < 16900) {
+            ctx.strokeStyle = 'rgba(168,68,44,' + ((1 - Math.sqrt(d2) / 130) * .12).toFixed(3) + ')';
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+        ctx.fillStyle = 'rgba(31,28,25,.16)';
+        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 7); ctx.fill();
+      }
+      raf = requestAnimationFrame(step);
+    }
+    resize();
+    addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+      if (running) step(); else cancelAnimationFrame(raf);
+    });
+    step();
+  })();
+
+  /* 命令面板 ⌘K：搜题 → 跳转展开 */
+  const cmdk = document.getElementById('cmdk');
+  const cmdkInput = document.getElementById('cmdk-input');
+  const cmdkList = document.getElementById('cmdk-list');
+  const cmdkFoot = document.getElementById('cmdk-foot');
+  let cmdkSel = 0, cmdkHits = [];
+  function cmdkRender() {
+    const kw = cmdkInput.value.trim().toLowerCase();
+    cmdkHits = deck.filter(e => !kw || (e.q + e.cat).toLowerCase().includes(kw));
+    cmdkSel = 0;
+    cmdkList.innerHTML = cmdkHits.slice(0, 12).map((e, i) => {
+      const no = String(deck.indexOf(e) + 1).padStart(2, '0');
+      const t = e.q.length > 30 ? e.q.slice(0, 30) + '…' : e.q;
+      return `<div class="cmdk-item${i === 0 ? ' on' : ''}" data-id="${e.id}"><span class="cmdk-no">${no}</span><span class="cmdk-q">${t}</span><span class="cmdk-cat">${e.cat}</span></div>`;
+    }).join('') || '<div class="cmdk-empty">没有匹配的题目</div>';
+    cmdkFoot.textContent = cmdkHits.length + ' 道匹配 · ↑↓ 选择 · Enter 打开 · Esc 关闭';
+  }
+  function cmdkMark() {
+    cmdkList.querySelectorAll('.cmdk-item').forEach((el, i) => el.classList.toggle('on', i === cmdkSel));
+    const on = cmdkList.querySelector('.cmdk-item.on');
+    if (on) on.scrollIntoView({ block: 'nearest' });
+  }
+  function cmdkOpen() { cmdk.hidden = false; cmdkInput.value = ''; cmdkRender(); cmdkInput.focus(); }
+  function cmdkClose() { cmdk.hidden = true; }
+  function cmdkGo() {
+    const hit = cmdkHits[cmdkSel];
+    if (!hit) return;
+    cmdkClose();
+    const target = document.getElementById('qa-' + hit.id);
+    if (target) { openCard(target); setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50); }
+  }
+  document.addEventListener('keydown', ev => {
+    if ((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === 'k') {
+      ev.preventDefault();
+      cmdk.hidden ? cmdkOpen() : cmdkClose();
+      return;
+    }
+    if (cmdk.hidden) return;
+    if (ev.key === 'Escape') cmdkClose();
+    else if (ev.key === 'ArrowDown') { ev.preventDefault(); cmdkSel = Math.min(cmdkSel + 1, Math.min(12, cmdkHits.length) - 1); cmdkMark(); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); cmdkSel = Math.max(cmdkSel - 1, 0); cmdkMark(); }
+    else if (ev.key === 'Enter') { ev.preventDefault(); cmdkGo(); }
+  });
+  cmdkInput.addEventListener('input', cmdkRender);
+  cmdkList.addEventListener('click', ev => {
+    const item = ev.target.closest('.cmdk-item');
+    if (!item) return;
+    cmdkSel = [...cmdkList.querySelectorAll('.cmdk-item')].indexOf(item);
+    cmdkGo();
+  });
+  cmdk.addEventListener('click', ev => { if (ev.target === cmdk) cmdkClose(); });
+  document.getElementById('cmdk-btn').addEventListener('click', cmdkOpen);
+
+  /* 图解画布 3D 倾斜：跟随鼠标轻微透视，触屏与 reduced-motion 关闭 */
+  if (!matchMedia('(pointer: coarse)').matches && !reducedMotion) {
+    let tiltStage = null;
+    qaGrid.addEventListener('mousemove', ev => {
+      const stage = ev.target.closest('.qa-stage');
+      if (tiltStage && tiltStage !== stage) { tiltStage.style.transform = ''; }
+      tiltStage = stage;
+      if (!stage) return;
+      const r = stage.getBoundingClientRect();
+      const rx = ((ev.clientY - r.top) / r.height - .5) * -3.5;
+      const ry = ((ev.clientX - r.left) / r.width - .5) * 3.5;
+      stage.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+    });
+    qaGrid.addEventListener('mouseleave', () => {
+      if (tiltStage) { tiltStage.style.transform = ''; tiltStage = null; }
+    });
+  }
 
   document.querySelectorAll('.faq-item').forEach(item => {
     item.addEventListener('toggle', () => {
