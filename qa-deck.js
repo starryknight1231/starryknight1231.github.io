@@ -507,4 +507,18 @@
      同时暴露画图助手，分部文件必须复用同一套，保证全站视觉一致。 */
   w.QA_BUILTIN = [qTcp(), qUrl(), qIso(), qCache(), qHash(), qSnow(), qVol(), qPool()];
   w.__qaHelpers = { C, SANS, MONO, box, txt, arrow, chip, layers };
+
+  /* 全站学习顺序：由浅入深——OS/网络基础 → Java 基础 → 数据库 → Redis → 并发 → 框架 → 分布式与系统设计综合。
+     门户与测试都按这份清单排序；50 个 id 必须与题库一一对应（测试会校验）。 */
+  w.QA_ORDER = [
+    'process-thread', 'udp-vs-tcp', 'tcp', 'http-status', 'cookie-session-jwt', 'url', 'https',
+    'tcp-2msl', 'tcp-reliable', 'tcp-sticky', 'virtual-memory', 'io-multiplexing',
+    'string-immutable', 'hashmap', 'jvm-memory', 'gc', 'classloader',
+    'mysql-engine', 'acid', 'isolation', 'index-btree', 'index-cluster', 'index-invalid',
+    'mysql-replication', 'sharding',
+    'redis-fast', 'cache', 'redis-persistence', 'redis-eviction', 'redis-consistency', 'redis-lock',
+    'thread-states', 'volatile', 'thread-pool', 'synchronized', 'cas', 'threadlocal', 'deadlock', 'chm',
+    'spring-ioc-aop', 'spring-tx', 'spring-bean',
+    'hash-ring', 'snowflake', 'cap', 'mq', 'idempotent', 'dist-tx', 'raft-election', 'seckill',
+  ];
 })(typeof window !== 'undefined' ? window : globalThis);

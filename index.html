@@ -431,7 +431,7 @@
       <div class="qa-grid" id="qa-deck"></div>
 
       <div class="coming">
-        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 50 道高频经典，分类浏览</span>
+        <span>每道题 = 30 秒答案 + 分步图解 + 追问链 + 动手实验 · 50 道高频经典，由浅入深排序</span>
         <span class="badge">持续增加</span>
       </div>
     </div>
@@ -746,10 +746,14 @@
     '网络': '#4e6478', '数据库': '#8d4a5e', 'Redis': '#2f6b60', '分布式': '#4f7038',
     'Java 并发': '#8a6a1f', 'Java 基础': '#6f5a68', '框架': '#a8452f', '操作系统': '#6f675d',
   };
-  const deck = (window.QA_DECK = (window.QA_BUILTIN || []).concat(
+  const all = (window.QA_BUILTIN || []).concat(
     window.QA_PART_1 || [], window.QA_PART_2 || [], window.QA_PART_3 || [],
     window.QA_PART_4 || [], window.QA_PART_5 || [], window.QA_PART_6 || [],
-  ));
+  );
+  const order = window.QA_ORDER || [];
+  const byId = {};
+  all.forEach(e => { byId[e.id] = e; });
+  const deck = (window.QA_DECK = order.length ? order.map(id => byId[id]).filter(Boolean) : all);
   const qaGrid = document.getElementById('qa-deck');
   const qaState = new Map();
 

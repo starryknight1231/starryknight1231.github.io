@@ -10,10 +10,16 @@ const parts = readdirSync(partDir).filter(f => f.endsWith('.js')).sort();
 for (const f of parts) {
   new Function('window', readFileSync(new URL(f, partDir), 'utf8'))(w);
 }
-const deck = (w.QA_DECK = (w.QA_BUILTIN || []).concat(
-  w.QA_PART_1 || [], w.QA_PART_2 || [], w.QA_PART_3 || [],
-  w.QA_PART_4 || [], w.QA_PART_5 || [], w.QA_PART_6 || [],
-));
+const deck = (w.QA_DECK = (() => {
+  const all = (w.QA_BUILTIN || []).concat(
+    w.QA_PART_1 || [], w.QA_PART_2 || [], w.QA_PART_3 || [],
+    w.QA_PART_4 || [], w.QA_PART_5 || [], w.QA_PART_6 || [],
+  );
+  const order = w.QA_ORDER || [];
+  const byId = {};
+  all.forEach(e => { byId[e.id] = e; });
+  return order.length ? order.map(id => byId[id]).filter(Boolean) : all;
+})());
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
 
 const CATS = ['网络', '数据库', 'Redis', '分布式', 'Java 并发', 'Java 基础', '框架', '操作系统'];
@@ -24,6 +30,9 @@ export default {
     t.eq('题库共 50 题', deck.length, 50);
     t.eq('id 全部唯一', new Set(deck.map(e => e.id)).size, deck.length);
     t.eq('分类覆盖 8 大类', new Set(deck.map(e => e.cat)).size, 8);
+    t.eq('QA_ORDER 覆盖全部 50 题且无多余', (w.QA_ORDER || []).length === 50 && (w.QA_ORDER || []).every(id => deck.some(e => e.id === id)) && deck.every(e => (w.QA_ORDER || []).includes(e.id)), true);
+    t.eq('学习顺序从基础开始（第一题=进程与线程）', deck[0].id, 'process-thread');
+    t.eq('学习顺序以综合设计收尾（最后一题=秒杀）', deck[49].id, 'seckill');
 
     for (const e of deck) {
       const tag = `[${e.id}]`;
