@@ -1,5 +1,7 @@
 # Starry Lab · 高频面试题图解 + 交互实验室
 
+[![CI](https://github.com/starryknight1231/starryknight1231.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/starryknight1231/starryknight1231.github.io/actions/workflows/ci.yml)
+
 > 把后端高频面试题**一步步画给你看**：30 秒答案 → 分步图解 → 追问链 → 动手实验。
 > 初级也能一路看懂，看完图还能跳进实验室亲手把结论「拨」出来。
 >
@@ -82,6 +84,8 @@
 ```bash
 node tests/run.mjs
 ```
+
+每次 push 会由 GitHub Actions 自动执行同一套测试（见顶部徽章）——724 个断言红了就不许上线。
 
 四个套件、724 个断言：Raft（选举收敛/复制/分区愈合/Figure 8 时间线/安全规则开关对照）、
 MVCC（快照可见性判定、优先图环检测、五类异常由引擎判出）、RegexVis（NFA 全串匹配、锚点、前瞻、非法正则报错）、
