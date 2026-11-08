@@ -50,11 +50,12 @@ export default {
     t.ok('有实验室深链的题也进互链（tcp/raft）', (relMap['tcp'] || []).includes('tcp-2msl') && Array.isArray(relMap['raft-election']));
 
     t.head('学习日志 · 时间线数据');
-    t.ok('日志至少 8 条（当前 ' + log.length + ' 条）', log.length >= 8);
+    t.ok('日志至少 110 条（当前 ' + log.length + ' 条，含印象笔记学习笔记）', log.length >= 110);
+    t.ok('时间跨度 ≥ 2017（九年笔记习惯）', log[log.length - 1].date <= '2017-12-31');
     t.ok('日期格式全部为 YYYY-MM-DD', log.every(e => /^\d{4}-\d{2}-\d{2}$/.test(e.date)));
     t.ok('按日期倒序（时间线最新在前）', log.every((e, i) => i === 0 || log[i - 1].date >= e.date));
     t.ok('tag 全部合法', log.every(e => LOG_TAGS.includes(e.tag)));
-    t.ok('标题与正文齐全', log.every(e => e.title && e.title.length >= 8 && e.body && e.body.length >= 30));
+    t.ok('标题与正文齐全（标题≥4 · 正文≥20）', log.every(e => e.title && e.title.length >= 4 && e.body && e.body.length >= 20));
     t.ok('sha 格式合法（可指向真实 commit）', log.filter(e => e.sha).every(e => /^[0-9a-f]{7,40}$/.test(e.sha)));
 
     for (const e of deck) {

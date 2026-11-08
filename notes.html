@@ -62,6 +62,11 @@
   .e-links a { color: var(--teal); border-bottom: 1px solid transparent; }
   .e-links a:hover { border-color: var(--teal); }
   .empty { padding: 40px 0; color: var(--faint); font-size: 13px; }
+  .year-head {
+    font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--ink);
+    padding: 18px 0 6px; letter-spacing: .06em; position: relative;
+  }
+  .year-head::after { content: ""; display: block; width: 32px; height: 2px; background: var(--accent); margin-top: 4px; }
   footer { max-width: 880px; margin: 0 auto; padding: 0 24px 40px; color: var(--faint); font-family: var(--mono); font-size: 10.5px; }
   footer .sep { margin: 0 8px; }
   @media (max-width: 560px) {
@@ -114,7 +119,10 @@
       tl.innerHTML = hits.length ? hits.map(e => {
         const sha = e.sha ? `<a href="https://github.com/starryknight1231/starryknight1231.github.io/commit/${e.sha}" target="_blank" rel="noopener">commit ${e.sha}</a>` : '';
         const link = e.link ? `<a href="${e.link.href}">${e.link.label}</a>` : '';
-        return `<article class="entry">
+        const year = e.date.slice(0, 4);
+        const yearHead = year !== render.lastYear ? `<div class="year-head">${year}</div>` : '';
+        render.lastYear = year;
+        return yearHead + `<article class="entry">
           <div class="e-date">${e.date}<span class="e-tag ${e.tag}">${e.tag}</span></div>
           <h2 class="e-title">${e.title}</h2>
           <p class="e-body">${e.body}</p>
